@@ -1,0 +1,4 @@
+﻿::deep .colored-switch {
+    --unselected-switch-color-rgb: 172, 0,32;
+    --selected-switch-color-rgb: 32, 176, 0;
+}

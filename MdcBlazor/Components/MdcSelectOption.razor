@@ -1,0 +1,57 @@
+﻿@namespace MdcBlazor
+@typeparam T
+
+<li class="mdc-deprecated-list-item @Class @disabledClass"
+    data-value="@Value"
+    style="@Style"
+    role="option"
+    @onkeydown="@(async (ea) => await OnKeyDown(ea))"
+    @onkeydown:stopPropagation="@true"
+    @onclick="@(async () => await ChangeValueAsync())">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <span class="mdc-deprecated-list-item__text">@Label</span>
+    }
+</li>
+
+@code {
+    private string disabledClass => Disabled ? "mdc-deprecated-list-item--disabled" : "";
+
+    [CascadingParameter] private MdcSelect<T> Select { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value sets this component as disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; } = false;
+
+    /// <summary>
+    /// Required. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Required. The value tied to this component
+    /// </summary>
+    [Parameter] public T Value { get; set; }
+
+    private async Task ChangeValueAsync() { await Select.ChangeValueAsync(Value); }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await Select.ChangeValueAsync(Value);
+        }
+    }
+}

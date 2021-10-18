@@ -1,0 +1,20 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Outlined Text Area with Character Counter</div>
+        <MdcTextArea @bind-Value="@textField1" MaxCharacterCount="255" Rows="2" Label="Text Area with Counter" TextFieldStyle="@MdcTextFieldStyle.outlined" Style="width: 300px" />
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcTextArea @bind-Value=""@textField1"" MaxCharacterCount=""255"" Rows=""2"" Label=""Text Area with Counter"" TextFieldStyle=""@MdcTextFieldStyle.outlined"" Style=""width: 300px"" />
+
+@code {
+    private string textField1;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private string textField1;
+}

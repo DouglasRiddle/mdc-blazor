@@ -1,0 +1,151 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+@if (FullWidthTopBar != null)
+{@FullWidthTopBar}
+<aside id="@Id" class="mdc-drawer @Class @drawerClass @fullWidthTopBarClass" style="@Style" @ref="drawerElement">
+    @if (SubTitle != null || Title != null)
+    {
+        <div class="mdc-drawer__header">
+            @if (!string.IsNullOrWhiteSpace(Title))
+            {<h1 class="@MdcTypography.H3 mdc-drawer__title">@Title</h1>}
+            @if (!string.IsNullOrWhiteSpace(SubTitle))
+            {<h1 class="@MdcTypography.H6  mdc-drawer__subtitle">@SubTitle</h1>}
+        </div>
+    }
+    <div class="mdc-drawer__content">
+        <nav class="mdc-deprecated-list">
+            <CascadingValue Value="@this" IsFixed="@true">
+                @DrawerContent
+            </CascadingValue>
+        </nav>
+    </div>
+</aside>
+
+@if (FullHeightDrawer)
+{
+    <div class="mdc-drawer-app-content">
+        @if (TopBar != null)
+        {
+            @TopBar
+            <div class="mdc-top-app-bar--fixed-adjust">@AppContent</div>
+        }
+        else
+        { @AppContent}
+    </div>
+}
+else
+{
+    <div class="mdc-drawer-app-content @fullWidthTopBarClass">
+        @AppContent
+    </div>
+}
+
+@code  {
+    private string drawerClass;
+    private string fullWidthTopBarClass;
+    private ElementReference drawerElement;
+    private bool isOpen;
+
+    /// <summary>
+    /// Required. Specifies the section containing body content
+    /// </summary>
+    [Parameter] public RenderFragment AppContent { get; set; }
+
+    /// <summary>
+    /// Required. Specifies the section containing drawer content
+    /// </summary>
+    [Parameter] public RenderFragment DrawerContent { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value closes a dismissible drawer when navigating to another page
+    /// </summary>
+    [Parameter] public bool CloseOnNavigate { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value indicates the drawer can be dismissed/toggled
+    /// </summary>
+    [Parameter] public bool Dismissible { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value indicates the drawer is the full height of its container
+    /// </summary>
+    [Parameter] public bool FullHeightDrawer { get; set; }
+
+    /// <summary>
+    /// Optional. Specifies the section containing <see cref="MdcTopAppBar" /> content
+    /// </summary>
+    [Parameter] public RenderFragment FullWidthTopBar { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value indicates the initial state of a dismissible drawer is open
+    /// </summary>
+    [Parameter] public bool StartOpen { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the subtitle text of a drawer
+    /// </summary>
+    [Parameter] public string SubTitle { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Required. Sets the component title attribute
+    /// </summary>
+    [Parameter] public string Title { get; set; }
+
+    /// <summary>
+    /// Optional. Specifies the section containing <see cref="MdcTopAppBar" /> content
+    /// </summary>
+    [Parameter] public RenderFragment TopBar { get; set; }
+
+    protected override void OnInitialized()
+    {
+        isOpen = StartOpen;
+        drawerClass = GetClasses();
+        fullWidthTopBarClass = FullWidthTopBar != null ? "mdc-top-app-bar--fixed-adjust" : "";
+
+        base.OnInitialized();
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await jsRuntime.InvokeVoidAsync("MdcBlazor.drawer.toggle", drawerElement, isOpen);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public void Toggle() => Toggle(!isOpen);
+    private void Toggle(bool openState)
+    {
+        isOpen = openState;
+        StateHasChanged();
+    }
+
+    public void NotifyNavigation()
+    {
+        if (CloseOnNavigate) { Toggle(false); }
+    }
+
+    private string GetClasses()
+    {
+        string classString = "";
+        classString += Dismissible ? " mdc-drawer--dismissible" : "mdc-drawer--modal";
+        if (StartOpen) { classString += " mdc-drawer--open"; }
+        return classString;
+    }
+
+}

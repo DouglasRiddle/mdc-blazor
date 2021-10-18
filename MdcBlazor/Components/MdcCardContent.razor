@@ -1,0 +1,105 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<div id="@Id" class="@Class @contentClass @mediaClass" style="@Style" @attributes="mdcContentAttributes" @onclick="OnClick" @ref="contentElement">
+    @if (ContentType == MdcCardContentType.media)
+    {
+        <div class="mdc-card__media-content">@ChildContent</div>
+    }
+    else
+    {
+        @ChildContent
+    }
+    @if (ContentType == MdcCardContentType.primaryaction)
+    {<div class="mdc-card__ripple"></div>}
+</div>
+
+@code  {
+    private string contentClass;
+    private ElementReference contentElement;
+    private Dictionary<string, object> mdcContentAttributes;
+    private string mediaClass;
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Required. Sets the card content type via <see cref="MdcCardContentType" /> enum
+    /// </summary>
+    [Parameter] public MdcCardContentType ContentType { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the card media type via <see cref="MdcCardMedia" /> enum
+    /// </summary>
+    [Parameter] public MdcCardMedia MediaType { get; set; } = MdcCardMedia.none;
+
+    /// <summary>
+    /// Optional. Pass code to run when this component is clicked.
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnClick="@(() => someBool = true)"
+    /// // or
+    /// OnClick="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    protected override void OnInitialized()
+    {
+        contentClass = GenerateContentClass();
+        mediaClass = GenerateMediaClass();
+
+        mdcContentAttributes = ContentType == MdcCardContentType.primaryaction ? new Dictionary<string, object>() { { "tabindex", "0" } } : null;
+
+        base.OnInitialized();
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && ContentType == MdcCardContentType.primaryaction)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.attachRipple.init", contentElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private string GenerateContentClass()
+    {
+        return ContentType switch
+        {
+            MdcCardContentType.actions => "mdc-card__actions",
+            MdcCardContentType.media => "mdc-card__media",
+            MdcCardContentType.primaryaction => "mdc-card__primary-action",
+            MdcCardContentType.text => "mdc-card__text",
+            _ => throw new ArgumentException(message: "Invalid enum value", paramName: nameof(ContentType))
+        };
+    }
+
+    private string GenerateMediaClass()
+    {
+        return MediaType switch
+        {
+            MdcCardMedia.background => "mdc-card__media-content",
+            MdcCardMedia.square => "mdc-card__media--square",
+            MdcCardMedia.widescreen => "mdc-card__media--16-9",
+            _ => ""
+        };
+    }
+}

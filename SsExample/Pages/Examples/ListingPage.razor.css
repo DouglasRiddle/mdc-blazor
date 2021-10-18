@@ -1,0 +1,18 @@
+﻿.version-link {
+    color: #003767;
+}
+
+    .version-link:hover {
+        color: #009ddc;
+    }
+
+::deep .code-button {
+    --show-code-button-scale: .7;
+}
+
+    ::deep .code-button .mdc-button {
+        background-color: hsl(0, 0%, 50%);
+        font-size: calc(.875rem * var(--show-code-button-scale));
+        height: calc(36px * var(--show-code-button-scale));
+        line-height: 1;
+    }

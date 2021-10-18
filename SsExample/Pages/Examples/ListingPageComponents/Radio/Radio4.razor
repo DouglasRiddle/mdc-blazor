@@ -1,0 +1,36 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">DateTime Radio Options</div>
+        <p>
+            <MdcRadio @bind-Value="@radio1Value">
+                <MdcRadioOption Label="Yesterday" Value="(DateTime?)DateTime.Today.AddDays(-1)" /><br />
+                <MdcRadioOption Label="Today" Value="(DateTime?)DateTime.Today" /><br />
+                <MdcRadioOption Label="Tomorrow" Value="(DateTime?)DateTime.Today.AddDays(1)" />
+            </MdcRadio>
+        </p>
+
+        <div>The selected radio option is <em>@(radio1Value == null ? "null" : ((DateTime)radio1Value).ToString("MM/dd/yyyy"))</em></div>
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<p>
+    <MdcRadio @bind-Value=""@radio1Value"">
+        <MdcRadioOption Label=""Yesterday"" Value=""(DateTime?)DateTime.Today.AddDays(-1)"" /><br />
+        <MdcRadioOption Label=""Today"" Value=""(DateTime?)DateTime.Today"" /><br />
+        <MdcRadioOption Label=""Tomorrow"" Value=""(DateTime?)DateTime.Today.AddDays(1)"" />
+    </MdcRadio>
+</p>
+
+<div>The selected radio option is <em>@(radio1Value == null ? ""null"" : ((DateTime)radio1Value).ToString(""MM/dd/yyyy""))</em></div>
+
+@code {
+    private DateTime? radio1Value;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private DateTime? radio1Value;
+}

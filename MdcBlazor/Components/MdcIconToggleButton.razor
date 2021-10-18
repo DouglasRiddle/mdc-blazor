@@ -1,0 +1,103 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<button aria-hidden="true"
+        aria-pressed="@Value"
+        id="@Id"
+        class="mdc-icon-button @Class @stateClass"
+        style="@Style"
+        type="@Type"
+        @onclick="@(async (e) => await ChangeValueAsync(e))"
+        @ref="buttonElement">
+    <div class="mdc-icon-button__ripple"></div>
+    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">@Icon_On</i>
+    <i class="material-icons mdc-icon-button__icon">@Icon_Off</i>
+</button>
+
+
+@code {
+    private ElementReference buttonElement;
+    private string stateClass;
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon for <c>false</c> value
+    /// </summary>
+    [Parameter] public string Icon_Off { get; set; }
+
+    /// <summary>
+    /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon for <c>true</c> value
+    /// </summary>
+    [Parameter] public string Icon_On { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run when this component is clicked.
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnClick="@(() => someBool = true)"
+    /// // or
+    /// OnClick="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the button type
+    /// </summary>
+    [Parameter] public MdcButtonType Type { get; set; } = MdcButtonType.button;
+
+    /// <summary>
+    /// Required. The value tied to this component
+    /// </summary>
+    [Parameter] public bool Value { get; set; }
+
+    /// <summary>
+    /// Optional. Updates the component's bound value
+    /// </summary>
+    [Parameter] public EventCallback<bool> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Set focus to this element
+    /// </summary>
+    public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", buttonElement); }
+
+    public async Task ChangeValueAsync(MouseEventArgs eventArgs)
+    {
+        await ValueChanged.InvokeAsync(!Value);
+
+        await OnClick.InvokeAsync(eventArgs);
+    }
+
+    protected override void OnInitialized()
+    {
+        stateClass = Value ? "mdc-icon-button--on" : "";
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.iconToggle.init", buttonElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

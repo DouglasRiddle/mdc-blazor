@@ -1,0 +1,36 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">List With SubHeader and SubList</div>
+        <MdcList>
+            <MdcListSubHeader Label="SubHeader" />
+            <MdcListItem Label="List Item 1" Icon="change_history" />
+            <MdcListItem Label="List Item 2" Icon="donut_large" />
+            <MdcListDivider />
+            <MdcListSubList Label="SubList">
+                <MdcListItem Label="SubList Item 1" />
+                <MdcListItem Label="SubList Item 2" />
+                <MdcListItem Label="SubList Item 3" />
+                <MdcListItem Label="SubList Item 4" />
+                <MdcListDivider />
+            </MdcListSubList>
+        </MdcList>
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcList>
+    <MdcListSubHeader Label=""SubHeader"" />
+    <MdcListItem Label=""List Item 1"" Icon=""change_history"" />
+    <MdcListItem Label=""List Item 2"" Icon=""donut_large"" />
+    <MdcListDivider />
+    <MdcListSubList Label=""SubList"">
+        <MdcListItem Label=""SubList Item 1"" />
+        <MdcListItem Label=""SubList Item 2"" />
+        <MdcListItem Label=""SubList Item 3"" />
+        <MdcListItem Label=""SubList Item 4"" />
+        <MdcListDivider />
+    </MdcListSubList>
+</MdcList>")</code></pre>
+        </CodeSection>
+    </section>
+</p>

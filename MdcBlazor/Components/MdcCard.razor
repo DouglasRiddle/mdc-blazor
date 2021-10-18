@@ -1,0 +1,38 @@
+﻿@namespace MdcBlazor
+
+<div id="@Id" class="mdc-card @Class @displayClass" style="@Style">
+    @ChildContent
+</div>
+
+@code  {
+    private string displayClass;
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the card display type via <see cref="MdcCardDisplay"/> enum. Defaults to "elevated"
+    /// </summary>
+    [Parameter] public MdcCardDisplay DisplayType { get; set; } = MdcCardDisplay.elevated;
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    protected override void OnInitialized()
+    {
+        displayClass = DisplayType == MdcCardDisplay.outlined ? "mdc-card--outlined" : "";
+
+        base.OnInitialized();
+    }
+}

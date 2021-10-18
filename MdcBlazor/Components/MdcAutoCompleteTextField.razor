@@ -1,0 +1,235 @@
+﻿@inherits MdcInputComponentBase<string>
+@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<MdcTextField AutoComplete="@MdcInputAutoComplete.off"
+              Class="@Class"
+              Disabled="@Disabled"
+              HelperText="@HelperText"
+              HelperTextPersistent="@HelperTextPersistent"
+              Id="@Id"
+              Label="@Label"
+              LeadingIcon="@LeadingIcon"
+              OnFocus="@(() => { filteredList = UpdateFilteredList(Value); isOpened = true; })"
+              OnFocusOut="@(async () => await OnFocusOut())"
+              OnInput="@UpdateValue"
+              OnKeyDown="@OnKeyDown"
+              OnLeadingIconClick="@OnLeadingIconClick"
+              OnTrailingIconClick="@OnTrailingIconClick"
+              StopEnterKeyDownPropagation="true"
+              Style="@Style"
+              TextFieldStyle="@TextFieldStyle"
+              TrailingIcon="@TrailingIcon"
+              Type="@Type"
+              @bind-Value="@Value"
+              @attributes="@AdditionalAttributes"
+              @ref="textField" />
+@if (Items != null && isOpened)
+{
+    <div class="mb-auto-complete-container">
+        <div class="mb-auto-complete-list" style="@($"position: {MenuListPosition.ToString().Replace("_", "")}")">
+            <MdcList @ref="listItem" Class="mdc-elevation--z4" IsSingleSelection="true">
+                @foreach (var item in filteredList)
+                {
+                    <MdcListItem OnClick="@(() => ChangeValueOnClick(item.Value))" Value="@item.Value" Label="@item.Label" />
+                }
+            </MdcList>
+        </div>
+    </div>
+}
+
+@code  {
+    private bool isOpened = true;
+    private MdcList listItem;
+    private List<MdcAutoCompleteListItem> filteredList = new List<MdcAutoCompleteListItem>();
+    private MdcTextField<string> textField;
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value sets this component as disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the helper text to display underneath this text input
+    /// </summary>
+    [Parameter] public string HelperText { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value indicates the helper text will always show
+    /// </summary>
+    [Parameter] public bool HelperTextPersistent { get; set; }
+
+    /// <summary>
+    /// Required. Sets the <see cref="List{MdcAutoCompleteListItem}" /> autocomplete options
+    /// </summary>
+    [Parameter] public List<MdcAutoCompleteListItem> Items { get; set; }
+
+    /// <summary>
+    /// Optional. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Set a <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> leading icon
+    /// </summary>
+    [Parameter] public string LeadingIcon { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the list position via <see cref="MdcAutocompleteListPosition" /> enum. Default is <c>_absolute</c>.
+    /// </summary>
+    [Parameter] public MdcAutocompleteListPosition MenuListPosition { get; set; } = MdcAutocompleteListPosition._absolute;
+
+    /// <summary>
+    /// Optional. Sets the number of autocomplete suggestions to show. Default value is <c>10</c>
+    /// </summary>
+    [Parameter] public int NumberOfElementsInList { get; set; } = 10;
+
+    /// <summary>
+    /// Optional. Pass code to run on input
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnInput="@(() => someBool = true)"
+    /// // or
+    /// OnInput="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run on leading icon click
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnLeadingIconClick="@(() => someBool = true)"
+    /// // or
+    /// OnLeadingIconClick="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<MouseEventArgs> OnLeadingIconClick { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run on trailing icon click
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnTrailingIconClick="@(() => someBool = true)"
+    /// // or
+    /// OnTrailingIconClick="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<MouseEventArgs> OnTrailingIconClick { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the text input style via <see cref="MdcTextFieldStyle" /> enum. Default is <c>flat</c>
+    /// </summary>
+    [Parameter] public MdcTextFieldStyle TextFieldStyle { get; set; } = MdcTextFieldStyle.flat;
+
+    /// <summary>
+    /// Optional. Set a <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> trailing icon
+    /// </summary>
+    [Parameter] public string TrailingIcon { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the text input type via <see cref="MdcTextFieldType" /> enum. Default is <c>text</c>
+    /// </summary>
+    [Parameter] public MdcTextFieldType Type { get; set; } = MdcTextFieldType.text;
+
+    /// <summary>
+    /// Optional. A <c>true</c> value will select the first result from the filtered list.
+    /// </summary>
+    /// <remark>
+    /// A user can bypass this by entering a value then clicking or tabbing out of the text field
+    /// </remark>
+    [Parameter] public bool ValueMustBeInList { get; set; } = false;
+
+    [Obsolete("Will be removed in a future version. Please use RefreshLayoutAsync.")]
+    public async Task RefreshLayout() { await RefreshLayoutAsync(); }
+
+    public async Task RefreshLayoutAsync() => await textField.RefreshLayoutAsync();
+
+    private List<MdcAutoCompleteListItem> UpdateFilteredList(string searchText)
+    {
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            return Items.Take(NumberOfElementsInList).ToList();
+        }
+        else
+        {
+            var loweredSearchText = searchText.ToLower();
+            return Items.Where(i => i.Value.ToLower().Contains(loweredSearchText) || i.Label.ToLower().Contains(loweredSearchText))
+                .Take(NumberOfElementsInList)
+                .ToList();
+        }
+    }
+
+    private void UpdateValue(ChangeEventArgs ea)
+    {
+        Value = ea.Value.ToString();
+        ValueChanged.InvokeAsync(Value);
+        filteredList = UpdateFilteredList(Value);
+        StateHasChanged();
+    }
+
+    private async Task OnFocusOut()
+    {
+        // Delay the closing to give time for a list item OnClick to fire
+        await Task.Delay(150);
+        await Task.Run(() => isOpened = false);
+    }
+
+    private void ChangeValueOnClick(string newValue)
+    {
+        Value = newValue;
+        ValueChanged.InvokeAsync(Value);
+        isOpened = false;
+        StateHasChanged();
+    }
+
+    private async void OnKeyDown(KeyboardEventArgs e)
+    {
+        // Ensure that we reopen the filter list if the value is changed after selecting "Enter"
+        isOpened = true;
+
+        if (e.Key == "ArrowDown" || e.Key == "ArrowUp")
+        {
+            int currentIndex = await listItem.GetSelectedIndexAsync();
+            var newIndex = e.Key == "ArrowDown" ? currentIndex + 1 : currentIndex - 1;
+            await listItem.SetSelectedIndexAsync(newIndex);
+        }
+        else if (e.Key == "Enter")
+        {
+            var selectedValue = await jsRuntime.InvokeAsync<string>("MdcBlazor.list.getSelectedValue", listItem.listElement);
+
+            if (selectedValue == null)
+            {
+                if (ValueMustBeInList)
+                {
+                    // If there is no exact match check to see if the value must be in the list of options
+                    // If yes, select the first filtered option
+                    await ValueChanged.InvokeAsync(filteredList.Select(i => i.Value).FirstOrDefault());
+                }
+
+                // Else we just keep the typed value
+            }
+            else
+            {
+                await ValueChanged.InvokeAsync(selectedValue);
+            }
+
+            filteredList = UpdateFilteredList(Value);
+            isOpened = false;
+            StateHasChanged();
+        }
+    }
+}

@@ -1,0 +1,39 @@
+﻿@namespace SsExample.Pages.Examples
+
+<ParameterSection>
+    <div>
+        Expected Layout With Full-Width Top App Bar<br /><pre><code>@(@"<MdcDrawer>
+    <FullWidthTopBar>
+        <MdcTopAppBar>
+            <MdcTopAppBarButton />
+        </MdcTopAppBar>
+    </FullWidthTopBar>
+    <DrawerContent>
+    </DrawerContent>
+    <AppContent>
+    </AppContent>
+</MdcDrawer>")</code></pre>
+    </div>
+    <div>
+        Expected Layout With Full-Height Drawer<br /><pre><code>@(@"<MdcDrawer FullHeightDrawer=""true"">
+    <TopBar> /* optional */
+        <MdcTopAppBar>
+            <MdcTopAppBarButton />
+        </MdcTopAppBar>
+    </TopBar>
+    <DrawerContent>
+    </DrawerContent>
+    <AppContent>
+    </AppContent>
+</MdcDrawer>")</code></pre>
+    </div>
+    <div><strong>Class</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to pass CSS class names to <code>@("<input>")</code> element</div>
+    <div><strong>CloseOnNavigate</strong> (<code>bool</code>)<br /><em>Optional</em><br />Close a dismissible drawer when navigating to another page</div>
+    <div><strong>Dismissible</strong> (<code>bool</code>)<br /><em>Optional</em><br />Used to set if a drawer can be dismissed</div>
+    <div><strong>FullHeightDrawer</strong> (<code>bool</code>)<br /><em>Optional</em><br />Used to set if a drawer is the full height of its container</div>
+    <div><strong>Id</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to pass component id string</div>
+    <div><strong>StartOpen</strong> (<code>bool</code>)<br /><em>Optional</em><br />Used to set the initial view state of a dismissible drawer</div>
+    <div><strong>SubTitle</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to set the subtitle text of a drawer</div>
+    <div><strong>Style</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to pass inline-CSS</div>
+    <div><strong>Title</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to set the title text of a drawer</div>
+</ParameterSection>

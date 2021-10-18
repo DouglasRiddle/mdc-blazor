@@ -1,0 +1,30 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Text Field with Helper Text and Icon</div>
+        <MdcTextField @bind-Value="@textField2"
+                      HelperText="Select 'X' to clear text field"
+                      HelperTextPersistent="false"
+                      Label="Some Text Field"
+                      OnTrailingIconClick="@(() => textField2 = "")"
+                      TrailingIcon="clear" />
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcTextField @bind-Value=""@textField2""
+              HelperText=""Select 'X' to clear text field""
+              HelperTextPersistent =""false""
+              Label=""Some Text Field""
+              OnTrailingIconClick=""@(() => textField2 = """")""
+              TrailingIcon=""clear"" />
+
+@code {
+    private string textField2;
+            }")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private string textField2;
+}

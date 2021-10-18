@@ -1,0 +1,37 @@
+﻿@inherits LayoutComponentBase
+
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+
+@using SsExample.Code
+
+<MdcNavDrawer TopAppBarTitle="Server Side MdcBlazor Example" UserFullName="">
+    <NavLinks>
+        <NavMenu />
+    </NavLinks>
+    <AppContent>
+            @Body
+    </AppContent>
+</MdcNavDrawer>
+
+@code {
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+
+            }
+            else
+            {
+                await Common.NavigateToElementAsync(navigationManager, jsRuntime);
+            }
+        }
+        catch
+        {
+            // Redirect to error page on exception
+            navigationManager.NavigateTo("./error/", true);
+        }
+    }
+}

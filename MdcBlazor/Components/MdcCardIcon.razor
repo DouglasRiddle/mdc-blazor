@@ -1,0 +1,48 @@
+﻿@namespace MdcBlazor
+
+<button id="@Id" class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon @Class" style="@Style" title="@Title" type="@Type" @onclick="OnClick">@Icon</button>
+
+@code {
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon
+    /// </summary>
+    [Parameter] public string Icon { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run when this component is clicked.
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnClick="@(() => someBool = true)"
+    /// // or
+    /// OnClick="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Required. Sets the component title attribute
+    /// </summary>
+    [Parameter] public string Title { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the button type
+    /// </summary>
+    [Parameter] public MdcButtonType Type { get; set; } = MdcButtonType.button;
+}

@@ -1,0 +1,32 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Outlined Select List</div>
+        <MdcSelect @bind-Value="@select1Value" Class="full-width" Label="Some Select Option" SelectStyle="@MdcSelectStyle.outlined" Style="width: 300px;">
+            <MdcSelectOption Disabled="true" Label="Please select an option" Value="@("Please Select")" />
+            <MdcSelectOption Label="Some String Value" Value="@("Some string")" />
+            <MdcSelectOption Label="A Different String Value" Value="@("A different string")" />
+        </MdcSelect>
+
+        <div>The selected option is <em>@select1Value</em></div>
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcSelect @bind-Value=""@select1Value"" Label=""Some Select Option"" SelectStyle=""@MdcSelectStyle.outlined"" Style=""width: 300px;"">
+    <MdcSelectOption Disabled=""true"" Label=""Please select an option"" Value=""@(""Please Select"")"" />
+    <MdcSelectOption Label=""Some String Value"" Value=""@(""Some string"")"" />
+    <MdcSelectOption Label=""A Different String Value"" Value=""@(""A different string"")"" />
+</MdcSelect>
+
+<div>The selected option is <em>@select1Value</em></div>
+
+@code {
+    private string select1Value = ""Please Select"";
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private string select1Value = "Please Select";
+}

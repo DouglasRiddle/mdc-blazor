@@ -1,0 +1,41 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Button with OnClick Dialog</div>
+        <MdcButton Label="Button" OnClick="(async () => { await buttonOnClick.ShowAsync(); })" />
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcButton Label=""Button"" OnClick=""(async () => { await buttonOnClick.ShowAsync(); })"" />
+
+<MdcDialog @ref=""buttonOnClick"" Title=""Button OnClick Dialog"">
+    <MdcDialogSurface>
+        <Content>This dialog was opened via a button on-click action.</Content>
+        <Actions>
+            <MdcDialogActions>
+                <MdcDialogButton Label=""Sweet!"" OnClick=""(async () => { await buttonOnClick.HideAsync(); })"" />
+            </MdcDialogActions>
+        </Actions>
+    </MdcDialogSurface>
+</MdcDialog>
+
+@code {
+    private MdcDialog buttonOnClick;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+<MdcDialog @ref="buttonOnClick" Title="Button OnClick Dialog">
+    <MdcDialogSurface>
+        <Content>This dialog was opened via a button on-click action.</Content>
+        <Actions>
+            <MdcDialogActions>
+                <MdcDialogButton Label="Sweet!" OnClick="(async () => { await buttonOnClick.HideAsync(); })" />
+            </MdcDialogActions>
+        </Actions>
+    </MdcDialogSurface>
+</MdcDialog>
+
+@code {
+    private MdcDialog buttonOnClick;
+}

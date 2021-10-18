@@ -1,0 +1,347 @@
+﻿/* Material Theme Color Reset */
+:root {
+    --mdc-theme-primary: #003767;
+    --mdc-theme-secondary: #009ddc;
+    --mdc-theme-background: #f4f4f6;
+    --mdc-theme-surface: #fff;
+    --mdc-theme-error: #b00020;
+    --mdc-theme-on-primary: #fff;
+    --mdc-theme-on-secondary: #fff;
+    --mdc-theme-on-surface: hsl(0, 0%, 33.7%);
+    /*--mdc-theme-on-error: #fff;
+    --mdc-theme-text-primary-on-background: rgba(0, 0, 0, 0.87);
+    --mdc-theme-text-secondary-on-background: rgba(0, 0, 0, 0.54);
+    --mdc-theme-text-hint-on-background: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-disabled-on-background: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-icon-on-background: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-primary-on-light: rgba(0, 0, 0, 0.87);
+    --mdc-theme-text-secondary-on-light: rgba(0, 0, 0, 0.54);
+    --mdc-theme-text-hint-on-light: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-disabled-on-light: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-icon-on-light: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-primary-on-dark: white;
+    --mdc-theme-text-secondary-on-dark: rgba(255, 255, 255, 0.7);
+    --mdc-theme-text-hint-on-dark: rgba(255, 255, 255, 0.5);
+    --mdc-theme-text-disabled-on-dark: rgba(255, 255, 255, 0.5);
+    --mdc-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);*/
+
+    --dark-blue-rgb: 0, 55, 103;
+    --light-blue-rgb: 0, 157, 220;
+    /* Switch Overrides */
+    --selected-switch-color-rgb: var(--dark-blue-rgb);
+    --unselected-switch-color-rgb: 33, 33, 33;
+}
+
+/* We do not declare these variables in root so that they can be set with a class at the component level */
+.mdc-switch {
+    --mdc-switch-selected-track-color: rgba(var(--selected-switch-color-rgb), 0.2);
+    --mdc-switch-selected-focus-track-color: rgba(var(--selected-switch-color-rgb), 0.2);
+    --mdc-switch-selected-hover-track-color: rgba(var(--selected-switch-color-rgb), 0.2);
+    --mdc-switch-selected-pressed-track-color: rgba(var(--selected-switch-color-rgb), 0.2);
+    --mdc-switch-selected-handle-color: rgba(var(--selected-switch-color-rgb), 1.0);
+    --mdc-switch-selected-focus-handle-color: rgba(var(--selected-switch-color-rgb), 1.0);
+    --mdc-switch-selected-hover-handle-color: rgba(var(--selected-switch-color-rgb), 1.0);
+    --mdc-switch-selected-pressed-handle-color: rgba(var(--selected-switch-color-rgb), 1.0);
+    --mdc-switch-unselected-track-color: rgba(var(--unselected-switch-color-rgb), 0.15);
+    --mdc-switch-unselected-focus-track-color: rgba(var(--unselected-switch-color-rgb), 0.15);
+    --mdc-switch-unselected-hover-track-color: rgba(var(--unselected-switch-color-rgb), 0.15);
+    --mdc-switch-unselected-pressed-track-color: rgba(var(--unselected-switch-color-rgb), 0.15);
+    --mdc-switch-unselected-handle-color: rgba(var(--unselected-switch-color-rgb), 0.7);
+    --mdc-switch-unselected-focus-handle-color: rgba(var(--unselected-switch-color-rgb), 1.0);
+    --mdc-switch-unselected-hover-handle-color: rgba(var(--unselected-switch-color-rgb), 1.0);
+    --mdc-switch-unselected-pressed-handle-color: rgba(var(--unselected-switch-color-rgb), 1.0);
+}
+
+/* Hard coded purple resets */
+.mdc-chip-set--choice .mdc-chip.mdc-chip--selected .mdc-chip__icon--leading {
+    color: rgba(var(--dark-blue-rgb), 0.54);
+}
+
+.mdc-data-table__row--selected {
+    background-color: rgba(var(--dark-blue-rgb), 0.04);
+}
+
+.mdc-drawer .mdc-deprecated-list-item--activated {
+    color: rgba(var(--dark-blue-rgb), 0.87);
+}
+
+.mdc-select:not(.mdc-select--disabled).mdc-select--focused .mdc-floating-label {
+    color: rgba(var(--dark-blue-rgb), 0.87);
+}
+
+.mdc-segmented-button__segment--selected {
+    background-color: rgba(var(--dark-blue-rgb), 0.08);
+    /* @alternate */
+    background-color: var(--mdc-segmented-button-selected-container-fill-color, rgba(var(--dark-blue-rgb), 0.08));
+}
+
+.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: rgba(var(--dark-blue-rgb), 0.87);
+}
+
+.mdc-drawer .mdc-deprecated-list-item--activated .mdc-deprecated-list-item__graphic {
+    color: var(--mdc-theme-primary, #003767);
+}
+
+.mdc-segmented-button__segment .mdc-segmented-button__ripple::before, .mdc-segmented-button__segment .mdc-segmented-button__ripple::after {
+    color: var(--mdc-theme-primary, #003767);
+}
+
+/* Set select to width of selected option by default */
+.mdc-data-table__pagination-rows-per-page-select,
+.mdc-select__anchor {
+    width: 100%;
+}
+
+/* Font-Family Reset */
+.mdc-button, .mdc-chip, .mdc-data-table__content, .mdc-data-table__cell, .mdc-data-table__header-cell, .mdc-dialog__title, .mdc-dialog__content, .mdc-drawer .mdc-deprecated-list-item, .mdc-drawer .mdc-deprecated-list-group__subheader, .mdc-drawer__title, .mdc-drawer__subtitle, .mdc-fab--extended, .mdc-floating-label, .mdc-form-field, .mdc-grid-tile__support-text, .mdc-image-list__label, .mdc-deprecated-list, .mdc-deprecated-list-item__meta:not(.material-icons), .mdc-deprecated-list-item__secondary-text, .mdc-deprecated-list-group__subheader, .mdc-select-helper-text, .mdc-select__selected-text, .mdc-slider__pin-value-marker, .mdc-snackbar__label, .mdc-tab, .mdc-text-field-helper-text, .mdc-text-field-character-counter, .mdc-text-field__input, .mdc-top-app-bar__title, .mdc-typography, .mdc-typography--headline1, .mdc-typography--headline2, .mdc-typography--headline3, .mdc-typography--headline4, .mdc-typography--headline5, .mdc-typography--headline6, .mdc-typography--subtitle1, .mdc-typography--subtitle2, .mdc-typography--body1, .mdc-typography--body2, .mdc-typography--caption, .mdc-typography--button, .mdc-typogrpahy--overline {
+    font-family: Roboto, sans-serif;
+}
+
+/* Data Table Reset */
+.mdc-data-table__table th, .mdc-data-table__table td {
+    vertical-align: middle;
+}
+
+.mdc-data-table__table th {
+    font-weight: bold;
+}
+
+/* Force form height when contained in mdc-dialog */
+.mdc-dialog form {
+    height: inherit;
+}
+
+/* List Link Reset */
+.mdc-deprecated-list a {
+    color: var(--mdc-theme-text-primary-on-background, rgba(0, 0, 0, 0.87));
+    outline: none;
+    text-decoration: none;
+}
+
+/* Temporary fix for
+   https://github.com/madskristensen/BundlerMinifier/issues/521 */
+@supports (top: max(0%)) {
+    .mdc-select--outlined .mdc-select__anchor {
+        /* @noflip */
+        padding-left: 16px;
+    }
+
+    [dir=rtl] .mdc-select--outlined .mdc-select__anchor, .mdc-select--outlined .mdc-select__anchor[dir=rtl] {
+        /* @noflip */
+        padding-right: 16px;
+    }
+
+    .mdc-select--outlined + .mdc-select-helper-text {
+        /* @noflip */
+        margin-left: 16px;
+    }
+
+    [dir=rtl] .mdc-select--outlined + .mdc-select-helper-text, .mdc-select--outlined + .mdc-select-helper-text[dir=rtl] {
+        /* @noflip */
+        margin-right: 16px;
+    }
+
+    .mdc-text-field--outlined {
+        /* @noflip */
+        padding-left: 16px;
+    }
+    /* Overwrite above rule for text-areas */
+    .mdc-text-field--textarea {
+        padding: 0;
+    }
+
+    .mdc-text-field--outlined + .mdc-text-field-helper-line {
+        /* @noflip */
+        padding-left: 16px;
+    }
+
+    .mdc-text-field--outlined.mdc-text-field--with-trailing-icon {
+        /* @noflip */
+        padding-left: 16px;
+    }
+
+    [dir=rtl] .mdc-text-field--outlined.mdc-text-field--with-trailing-icon, .mdc-text-field--outlined.mdc-text-field--with-trailing-icon[dir=rtl] {
+        /* @noflip */
+        padding-right: 16px;
+    }
+}
+
+
+/* Prevent selecting MdcSelect disabled option */
+.mdc-deprecated-list-item--disabled {
+    pointer-events: none;
+}
+
+/* Validation */
+.validation-message {
+    color: var(--mdc-theme-error);
+}
+
+/* MdcAutoCompleteTextField */
+.mb-auto-complete-container {
+    position: relative;
+    z-index: 99;
+}
+
+.mb-auto-complete-list {
+    background-color: var(--mdc-theme-surface, #fff);
+}
+
+/* Flat Fields */
+.mdc-text-field.invalid .mdc-line-ripple::before,
+.mdc-text-field.invalid .mdc-line-ripple::after,
+.mdc-select.invalid .mdc-line-ripple::before,
+.mdc-select.invalid .mdc-line-ripple::after {
+    border-bottom-color: var(--mdc-theme-error) !important;
+}
+
+.mdc-text-field.invalid .mdc-floating-label,
+.mdc-select.invalid .mdc-floating-label {
+    color: var(--mdc-theme-error) !important;
+}
+
+/* Outlined Fields */
+.mdc-text-field.invalid .mdc-notched-outline > span,
+.mdc-select.invalid .mdc-notched-outline > span {
+    border-color: var(--mdc-theme-error) !important;
+}
+
+.mdc-card__text {
+    padding: 16px;
+}
+
+/* Show calendar picker icon in Chrome
+   Removed in https://github.com/material-components/material-components-web/commit/4951e7651ffbd99b382948e48306a23d2fd74fb1
+*/
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+input[type="month"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="week"]::-webkit-calendar-picker-indicator {
+    display: block;
+}
+
+/* NAV HEADER */
+body.nav-drawer > app {
+    display: flex;
+    width: 100%;
+}
+
+.selectable {
+    cursor: pointer;
+}
+
+main.content {
+    font-size: 1rem;
+    height: 100%;
+    line-height: 162%;
+    padding: 2rem 3%;
+    width: 100%;
+}
+
+.app-bar {
+    position: absolute;
+}
+
+/* only apply this style if below top app bar */
+.mdc-top-app-bar {
+    z-index: 7;
+}
+
+.mdc-top-app-bar__navigation-icon {
+    cursor: pointer;
+    padding: 12px;
+}
+
+/* Data Table Sort Icon */
+.mdc-data-table-sortable-header div {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+}
+
+.mdc-data-table-sort-icon {
+    color: hsl(0, 0%, 50%);
+    font-size: 0.875rem;
+    margin-right: .25rem;
+}
+
+.master-header-container {
+    align-items: center;
+    display: flex;
+    font-size: 2rem;
+    line-height: 100%;
+    justify-content: space-between;
+    white-space: nowrap;
+    width: 100%;
+}
+
+    .master-header-container a,
+    .master-header-container a:hover {
+        align-items: center;
+        color: #fff;
+        display: flex;
+        text-decoration: none;
+    }
+
+        .master-header-container a:hover {
+            opacity: 0.8;
+        }
+
+.master-header-logo-container {
+    overflow: hidden;
+}
+
+.master-header-logo-link svg {
+    fill: #fff;
+    height: 2.5rem;
+}
+
+.master-header-login {
+    display: inline-flex;
+    flex: 1 0 auto;
+    font-size: 0.85rem;
+    justify-content: flex-end;
+    line-height: 110%;
+    overflow: hidden;
+    padding-left: 2%;
+    text-align: right;
+}
+
+body.nav-drawer {
+    display: flex;
+    height: 100vh;
+}
+
+.nav-drawer .master-header-logo-container {
+    padding-left: 20px;
+}
+
+.mdc-drawer-app-content {
+    flex: auto;
+    overflow-x: hidden;
+    position: relative;
+    width: auto;
+}
+
+/* ------------------- PHONE ------------------- */
+@media screen and (max-width: 599px) {
+    .mdc-hidden-phone {
+        display: none;
+    }
+}
+
+/* ------------------- TABLET ------------------- */
+@media screen and (min-width: 600px) and (max-width: 839px) {
+    .mdc-hidden-tablet {
+        display: none;
+    }
+}
+
+/* ------------------- DESKTOP ------------------- */
+@media screen and (min-width: 840px) {
+    .mdc-hidden-desktop {
+        display: none;
+    }
+}

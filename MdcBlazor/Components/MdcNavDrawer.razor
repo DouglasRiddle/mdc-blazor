@@ -1,0 +1,69 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<header class="mdc-top-app-bar app-bar mdc-top-app-bar--fixed" @ref="topAppBarElement">
+    <div class="mdc-top-app-bar__row">
+        <div class="master-header-container nav-drawer">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <span class="material-icons mdc-top-app-bar__navigation-icon">menu</span>
+                <span class="master-header-logo-container">
+                    <a class="master-header-logo-link" href="./" title="@TopAppBarTitle.ToUpper()">
+                        &nbsp;@TopAppBarTitle.ToUpper()
+                    </a>
+                </span>
+            </section>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end master-header-login">
+            </section>
+        </div>
+    </div>
+</header>
+<aside class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust" @ref="drawerElement">
+    <div class="mdc-drawer__content">
+        <div class="mdc-deprecated-list" @ref="listElement">
+            @NavLinks
+        </div>
+    </div>
+</aside>
+
+<div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
+    <main class="content" @ref="mainContentElement">
+        @AppContent
+    </main>
+</div>
+
+@code {
+    private ElementReference drawerElement;
+    private ElementReference listElement;
+    private ElementReference mainContentElement;
+    private ElementReference topAppBarElement;
+
+    /// <summary>
+    /// Required. Specifies the section containing body content
+    /// </summary>
+    [Parameter] public RenderFragment AppContent { get; set; }
+
+    /// <summary>
+    /// Required. Specifies the drawer section containing <see cref="MdcNavLink" /> items
+    /// </summary>
+    [Parameter] public RenderFragment NavLinks { get; set; }
+
+    /// <summary>
+    /// Required. Sets the application title displayed in the top app bar
+    /// </summary>
+    [Parameter] public string TopAppBarTitle { get; set; }
+
+    /// <summary>
+    /// Required. Sets the user full name displayed in the top app bar
+    /// </summary>
+    [Parameter] public string UserFullName { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.navDrawer.init", drawerElement, listElement, mainContentElement, topAppBarElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

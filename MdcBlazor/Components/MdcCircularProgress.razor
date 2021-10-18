@@ -1,0 +1,125 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<div id="@Id" class="mdc-circular-progress @progressBarStyle @Class" style="@valuesObject.StyleValue @Style" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1" @ref="circularProgressElement">
+    <div class="mdc-circular-progress__determinate-container">
+        <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="@valuesObject.ViewBoxValue" xmlns="http://www.w3.org/2000/svg">
+            <circle class="mdc-circular-progress__determinate-track" cx="@valuesObject.CxCyValue" cy="@valuesObject.CxCyValue" r="@valuesObject.RValue" stroke-width="@valuesObject.StrokeWidthValue" />
+            <circle class="mdc-circular-progress__determinate-circle" cx="@valuesObject.CxCyValue" cy="@valuesObject.CxCyValue" r="18" stroke-dasharray="@valuesObject.StrokeDashArrayValue" stroke-dashoffset="@valuesObject.StrokeDashOffsetValue" stroke-width="@valuesObject.StrokeWidthValue" />
+        </svg>
+    </div>
+    <div class="mdc-circular-progress__indeterminate-container">
+        <div class="mdc-circular-progress__spinner-layer">
+            <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left">
+                <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="@valuesObject.ViewBoxValue" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="@valuesObject.CxCyValue" cy="@valuesObject.CxCyValue" r="@valuesObject.RValue" stroke-dasharray="@valuesObject.StrokeDashArrayValue" stroke-dashoffset="@valuesObject.StrokeDashOffsetValue" stroke-width="@valuesObject.StrokeWidthValue" />
+                </svg>
+            </div>
+            <div class="mdc-circular-progress__gap-patch">
+                <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="@valuesObject.ViewBoxValue" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="@valuesObject.CxCyValue" cy="@valuesObject.CxCyValue" r="@valuesObject.RValue" stroke-dasharray="@valuesObject.StrokeDashArrayValue" stroke-dashoffset="@valuesObject.StrokeDashOffsetValue" stroke-width="@valuesObject.StrokeWidthGapValue" />
+                </svg>
+            </div>
+            <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+                <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="@valuesObject.ViewBoxValue" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="@valuesObject.CxCyValue" cy="@valuesObject.CxCyValue" r="@valuesObject.RValue" stroke-dasharray="@valuesObject.StrokeDashArrayValue" stroke-dashoffset="@valuesObject.StrokeDashOffsetValue" stroke-width="@valuesObject.StrokeWidthValue" />
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private ElementReference circularProgressElement;
+    private string progressBarStyle;
+    private MdcCircularProgressValue valuesObject;
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value puts the circular progress indicator in an indeterminate state. Set to <c>true</c> by default
+    /// </summary>
+    [Parameter] public bool IsIndeterminate { get; set; } = true;
+
+    /// <summary>
+    /// Optional. Sets the circular progress element size. Set to <c>large</c> by default
+    /// </summary>
+    [Parameter] public MdcCircularProgressSize Size { get; set; } = MdcCircularProgressSize.large;
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    protected override void OnInitialized()
+    {
+        SetValues();
+
+        // Set progress bar style CSS class
+        progressBarStyle = IsIndeterminate ? "mdc-circular-progress--indeterminate" : "";
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.circularProgress.init", circularProgressElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void SetValues()
+    {
+        switch (Size)
+        {
+            case MdcCircularProgressSize.large:
+                valuesObject = new MdcCircularProgressValue()
+                {
+                    RValue = "18",
+                    SizeValue = (int)Size,
+                    StrokeDashArrayValue = "113.097",
+                    StrokeDashOffsetValue = "56.549",
+                    StrokeWidthGapValue = "3.2",
+                    StrokeWidthValue = "4"
+                };
+                break;
+
+            case MdcCircularProgressSize.medium:
+                valuesObject = new MdcCircularProgressValue()
+                {
+                    RValue = "12.5",
+                    SizeValue = (int)Size,
+                    StrokeDashArrayValue = "78.54",
+                    StrokeDashOffsetValue = "39.27",
+                    StrokeWidthGapValue = "2.4",
+                    StrokeWidthValue = "3"
+                };
+                break;
+
+            case MdcCircularProgressSize.small:
+                valuesObject = new MdcCircularProgressValue()
+                {
+                    RValue = "8.75",
+                    SizeValue = (int)Size,
+                    StrokeDashArrayValue = "54.978",
+                    StrokeDashOffsetValue = "27.489",
+                    StrokeWidthGapValue = "2",
+                    StrokeWidthValue = "2.5"
+                };
+                break;
+
+            default: valuesObject = new MdcCircularProgressValue(); break;
+        }
+    }
+}

@@ -1,0 +1,185 @@
+﻿@page "/listing"
+@implements IDisposable
+
+@inject NavigationManager navManager
+@inject IJSRuntime jsRuntime
+
+<div class="mdc-layout-grid">
+    <div class="mdc-layout-grid__inner">
+
+        <div id="Autocomplete" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Autocomplete Text Field</h1>
+            <AutocompleteParam />
+            <Autocomplete1 />
+            <Autocomplete2 />
+        </div>
+
+        <div id="Button" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Button</h1>
+            <ButtonParam />
+            <Button1 />
+            <Button2 />
+            <Button3 />
+            <Button4 />
+
+            <h1 class="@MdcTypography.H6">Button Options</h1>
+            <Button5 />
+            <Button6 />
+            <Button7 />
+            <Button8 />
+        </div>
+
+        <div id="IconButton" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Icon Button</h1>
+            <IconButtonParam />
+            <IconButton1 />
+            <IconButton2 />
+        </div>
+
+        <div id="Card" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Card</h1>
+            <CardParam />
+            <Card1 />
+        </div>
+
+        <div id="Checkbox" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Checkbox</h1>
+            <CheckboxParam />
+            <Checkbox1 />
+            <Checkbox2 />
+        </div>
+
+        <div id="CircularProgress" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Circular Progress</h1>
+            <CircularProgressParam />
+            <CircularProgress1 />
+            <CircularProgress2 />
+        </div>
+
+        <div id="Dialog" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Dialog</h1>
+            <DialogParam />
+            <Dialog1 />
+            <Dialog2 />
+            <Dialog3 />
+        </div>
+
+        <div id="Divider" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Divider</h1>
+            <DividerParam />
+            <Divider1 />
+        </div>
+
+        <div id="Drawer" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Drawer</h1>
+            <DrawerParam />
+            <Drawer1 />
+        </div>
+
+        <div id="LinearProgress" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Linear Progress</h1>
+            <LinearProgressParam />
+            <LinearProgress1 />
+        </div>
+
+        <div id="List" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">List</h1>
+            <ListParam />
+            <List1 />
+            <List2 />
+            <List3 />
+            <List4 />
+        </div>
+
+        <div id="RadioOption" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Radio Option</h1>
+            <RadioParam />
+            <Radio1 />
+            <Radio2 />
+            <Radio3 />
+            <Radio4 />
+        </div>
+
+        <div id="SelectList" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Select List</h1>
+            <SelectListParam />
+            <Select1 />
+            <Select2 />
+        </div>
+
+        <div id="Switch" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Switch</h1>
+            <SwitchParam />
+            <Switch1 />
+            <Switch2 />
+        </div>
+
+        <div id="Table" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Table</h1>
+            <TableParam />
+            <Table1 />
+            <Table2 />
+        </div>
+
+        <div id="TextField" class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+            <h1 class="@MdcTypography.H5 component-section-header">Text Field</h1>
+            <TextFieldParam />
+            <Text1 />
+            <Text2 />
+            <Text3 />
+            <Text4 />
+            <Text5 />
+            <Text6 />
+        </div>
+        @if (!string.IsNullOrWhiteSpace(refreshHelper.LastRefreshTime))
+        {
+            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet flow">
+                <div class="data-refresh-container">Page Refreshed at @refreshHelper.LastRefreshTime</div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private readonly AutoRefreshHelper refreshHelper = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                await Common.NavigateToElementAsync(navManager, jsRuntime);
+
+                // Call StateHasChanged to get refreshHelper going
+                StateHasChanged();
+            }
+            else
+            {
+                await refreshHelper.RefreshAsync(async (cancellationToken) => StateHasChanged());
+            }
+        }
+        catch
+        {
+            navManager.NavigateTo("./error/", true);
+        }
+    }
+
+    // Based on https://stackoverflow.com/a/18336993/12189828
+    private bool disposed = false;
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposed)
+        {
+            if (disposing) { refreshHelper?.Dispose(); }
+
+            // Indicate that the instance has been disposed.
+            disposed = true;
+        }
+    }
+} 

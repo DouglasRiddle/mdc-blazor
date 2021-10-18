@@ -1,0 +1,47 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Drawer</div>
+        <MdcButton ButtonStyle="@MdcButtonStyle.outlined" Label="Toggle Drawer" OnClick="@(() => mdcDrawer.Toggle())" />
+        <div style="position: relative; overflow: hidden;">
+            <MdcDrawer Dismissible="true" StartOpen="true" @ref="mdcDrawer">
+                <DrawerContent>
+                    <MdcList>
+                        <MdcListItem Label="A list item" />
+                    </MdcList>
+                </DrawerContent>
+                <AppContent>
+                    <div style="padding: 1rem;">This is some <code>html</code> content next to a dismissible drawer. For less contrived examples, see the <a href="./drawer-example-full-width-top-bar/" target="_self">Drawer Example 1</a> and <a href="./drawer-example-top-bar/" target="_self">Drawer Example 2</a> pages.</div>
+                </AppContent>
+            </MdcDrawer>
+            @* empty div to set the appropriate height *@
+            <div />
+        </div>
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcButton ButtonStyle=""@MdcButtonStyle.outlined"" Label=""Toggle Drawer"" OnClick=""@(() => mdcDrawer.Toggle())"" />
+<div style=""position: relative; overflow: hidden;"">
+    <MdcDrawer Dismissible=""true"" StartOpen=""true"" @ref=""mdcDrawer"">
+        <DrawerContent>
+            <MdcList>
+                <MdcListItem Label=""A list item"" />
+            </MdcList>
+        </DrawerContent>
+        <AppContent>
+            <div style=""padding: 1rem;"">This is some <code>html</code> content next to a dismissible drawer. For less contrived examples, see the <a href=""./drawer-example-full-width-top-bar/"" target=""_self"">Drawer Example 1</a> and <a href=""./drawer-example-top-bar/"" target=""_self"">Drawer Example 2</a> pages.</div>
+        </AppContent>
+    </MdcDrawer>
+    @* empty div to set the appropriate height *@
+    <div />
+</div>
+
+@code {
+    private MdcDrawer mdcDrawer;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private MdcDrawer mdcDrawer;
+}

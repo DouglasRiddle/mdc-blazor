@@ -1,0 +1,32 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Radio Options</div>
+        <MdcRadio @bind-Value="@radio1Value">
+            <MdcRadioOption Label="Disabled Option" Disabled="true" Value="@("Disabled")" />
+            <MdcRadioOption Label="Valued Option" Value="@("Valued")" />
+            <MdcRadioOption Label="Less Valued Option" Value="@("Undervalued")" />
+        </MdcRadio>
+
+        <div>The selected radio option is <em>@radio1Value</em></div>
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcRadio @bind-Value=""@radio1Value"">
+    <MdcRadioOption Label=""Disabled Option"" Disabled=""true"" Value=""@(""Disabled"")"" />
+    <MdcRadioOption Label=""Valued Option"" Value=""@(""Valued"")"" />
+    <MdcRadioOption Label=""Less Valued Option"" Value=""@(""Undervalued"")"" />
+</MdcRadio>
+
+<div>The selected radio option is <em>@radio1Value</em>.</div>
+
+@code {
+    private string radio1Value = ""Not Selected"";
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private string radio1Value = "Not Selected";
+}

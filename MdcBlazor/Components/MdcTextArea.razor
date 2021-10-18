@@ -1,0 +1,206 @@
+﻿@inherits MdcInputComponentBase<string>
+@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+@using MdcBlazor.Code
+
+<label id="@Id" class="mdc-text-field mdc-text-field--textarea @Class @prefilledTextClass @styleClass @FieldClass" style="@Style" @attributes="ariaAttributes" @ref="textFieldElement">
+    @if (TextFieldStyle == MdcTextFieldStyle.flat)
+    {<span class="mdc-text-field__ripple"></span>}
+
+    @if (TextFieldStyle == MdcTextFieldStyle.outlined)
+    {
+        <span class="mdc-notched-outline">
+            <span class="mdc-notched-outline__leading"></span>
+            @if (hasLabel)
+            {
+                <span class="mdc-notched-outline__notch">
+                    <span class="mdc-floating-label @floatText" for="@inputId">@Label</span>
+                </span>
+            }
+            <span class="mdc-notched-outline__trailing"></span>
+        </span>
+    }
+    else
+    {
+        @if (hasLabel)
+        {
+            <span class="mdc-floating-label @floatText" for="@inputId">@Label</span>
+        }
+    }
+
+    <span class="mdc-text-field__resizer">
+        <textarea autocomplete="@((AutoComplete.ToString()).Replace('_', '-'))"
+                  class="mdc-text-field__input @FieldClass"
+                  disabled="@Disabled"
+                  id="@inputId"
+                  rows="@Rows"
+                  @onkeydown:stopPropagation="StopEnterKeyDownPropagation"
+                  @attributes="@AdditionalAttributes"
+                  @bind="CurrentValue"
+                  @oninput="OnInput" />
+    </span>
+
+    @if (TextFieldStyle == MdcTextFieldStyle.flat)
+    {<span class="mdc-line-ripple"></span>}
+</label>
+@if (!string.IsNullOrWhiteSpace(HelperText) || MaxCharacterCount != 0)
+{
+    <div class="mdc-text-field-helper-line">
+        @if (!string.IsNullOrWhiteSpace(HelperText))
+        {<div aria-hidden="true" class="mdc-text-field-helper-text @helperTextPersistentClass" id="@helperTextId" @ref="helperTextFieldElement">
+                @HelperText
+            </div>}
+        @if (MaxCharacterCount > 0)
+        {<div class="mdc-text-field-character-counter" @ref="characterCountElement">0 / @MaxCharacterCount</div>}
+    </div>
+}
+
+@code  {
+    // TODO Add IsExpanding parameter
+    // Source:https://css-tricks.com/auto-growing-inputs-textareas/#article-header-id-3
+
+    private Dictionary<string, object> ariaAttributes;
+    private ElementReference characterCountElement;
+    private string inputId = Common.GenerateId();
+    private bool hasLabel;
+    private ElementReference helperTextFieldElement;
+    private string helperTextId = Common.GenerateId();
+    private string helperTextPersistentClass;
+    private string noLabelClass;
+    private string styleClass;
+    private ElementReference textFieldElement;
+
+    /// <summary>
+    /// Optional. Sets the autocomplete value via <see cref="MdcInputAutoComplete"/> enum. Default is <c>on</c>
+    /// </summary>
+    [Parameter] public MdcInputAutoComplete AutoComplete { get; set; } = MdcInputAutoComplete.on;
+
+    /// <summary>
+    /// Optional. A <c>true</c> value sets this component as disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the helper text to display underneath this text input
+    /// </summary>
+    [Parameter] public string HelperText { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value indicates the helper text will always show
+    /// </summary>
+    [Parameter] public bool HelperTextPersistent { get; set; }
+
+    /// <summary>
+    /// Optional. Used only when within an MdcDialog. A <c>true</c> value indicates this element should be focused on dialog open
+    /// </summary>
+    [Parameter] public bool IsInitialDialogFocus { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the maximum characters allowed in a field
+    /// </summary>
+    [Parameter] public int MaxCharacterCount { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run on input
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnInput="@(() => someBool = true)"
+    /// // or
+    /// OnInput="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the default number of textarea rows.
+    /// </summary>
+    [Parameter] public string Rows { get; set; } = "3";
+
+    /// <summary>
+    /// Optional. A <c>true</c> value indicates that an "Enter" keydown in this input should not propagate
+    /// </summary>
+    [Parameter] public bool StopEnterKeyDownPropagation { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the text input style via <see cref="MdcTextFieldStyle" /> enum. Default is <c>flat</c>
+    /// </summary>
+    [Parameter] public MdcTextFieldStyle TextFieldStyle { get; set; } = MdcTextFieldStyle.flat;
+
+    /// <summary>
+    /// Optional. Sets the text input type via <see cref="MdcTextFieldType" /> enum. Default is <c>text</c>
+    /// </summary>
+    [Parameter] public MdcTextFieldType Type { get; set; } = MdcTextFieldType.text;
+
+    // Force float text if value exists or is date type
+    private string prefilledTextClass => string.IsNullOrEmpty(Value) ? "" : "mdc-text-field--label-floating";
+    private string floatText => string.IsNullOrEmpty(Value) ? "" : "mdc-floating-label--float-above";
+
+    [Obsolete("Will be removed in a future version. Please use RefreshLayoutAsync.")]
+    public async Task RefreshLayout() { await RefreshLayoutAsync(); }
+
+    /// <summary>
+    /// Set focus to this element
+    /// </summary>
+    public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", textFieldElement); }
+
+    public async Task RefreshLayoutAsync() => await jsRuntime.InvokeVoidAsync("MdcBlazor.textField.layout", textFieldElement);
+
+    // Set attributes
+    protected override void OnInitialized()
+    {
+        hasLabel = !string.IsNullOrEmpty(Label);
+        helperTextPersistentClass = HelperTextPersistent ? "mdc-text-field-helper-text--persistent" : "";
+        noLabelClass = hasLabel ? "" : "mdc-text-field--no-label";
+        styleClass = TextFieldStyle == MdcTextFieldStyle.outlined ? "mdc-text-field--outlined" : "mdc-text-field--filled";
+
+        ariaAttributes = !string.IsNullOrWhiteSpace(HelperText) ? new Dictionary<string, object>() { { "aria-controls", helperTextId }, { "aria-describedby", helperTextId } } : null;
+
+        if (MaxCharacterCount > 0)
+        {
+            if (AdditionalAttributes == null)
+            {
+                AdditionalAttributes = new Dictionary<string, object> { { "maxlength", MaxCharacterCount.ToString() } };
+            }
+            else if (!AdditionalAttributes.ContainsKey("maxlength"))
+            {
+                AdditionalAttributes.Append(new("maxlength", MaxCharacterCount.ToString()));
+            }
+        }
+
+        if (IsInitialDialogFocus)
+        {
+            if (AdditionalAttributes == null)
+            {
+                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
+            }
+            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
+            {
+                AdditionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
+            }
+        }
+
+        base.OnInitialized();
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.textField.init", textFieldElement, StopEnterKeyDownPropagation, helperTextFieldElement, new ElementReference(), new ElementReference(), characterCountElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

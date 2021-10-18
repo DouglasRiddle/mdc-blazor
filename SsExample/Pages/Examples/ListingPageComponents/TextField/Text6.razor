@@ -1,0 +1,24 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Set input Focus</div>
+        <MdcTextField @ref="textFieldElement" @bind-Value="textField" Label="Just A TextField" Style="display: block;" />
+        <MdcButton ButtonStyle="@MdcButtonStyle.outlined" Label="Focus TextField" OnClick="@(async () => await textFieldElement.FocusAsync())" />
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcTextField @ref=""textFieldElement"" @bind-Value=""textField"" Label=""Just A TextField"" Style=""display: block;"" />
+<MdcButton ButtonStyle=""@MdcButtonStyle.outlined"" Label=""Focus TextField"" OnClick=""@(async () => await textFieldElement.FocusAsync())"" />
+
+@code {
+    private string textField;
+    private MdcTextField<string> textFieldElement;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private string textField;
+    private MdcTextField<string> textFieldElement;
+}

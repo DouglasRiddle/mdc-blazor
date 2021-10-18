@@ -1,0 +1,64 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<button id="@Id" class="mdc-button mdc-card__action mdc-card__action--button @Class" style="@Style" type="@Type" @onclick="OnClick" @ref="buttonElement">
+    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__label">@Label</span>
+</button>
+
+@code {
+    private ElementReference buttonElement;
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Required. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run when this component is clicked.
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnClick="@(() => someBool = true)"
+    /// // or
+    /// OnClick="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the button type
+    /// </summary>
+    [Parameter] public MdcButtonType Type { get; set; } = MdcButtonType.button;
+
+    /// <summary>
+    /// Set focus to this element
+    /// </summary>
+    public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", buttonElement); }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.attachRipple.init", buttonElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

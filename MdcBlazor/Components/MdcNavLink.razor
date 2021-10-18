@@ -1,0 +1,51 @@
+﻿@namespace MdcBlazor
+@using Microsoft.AspNetCore.Components.Routing
+
+<NavLink id="@Id" @attributes="@AdditionalAttributes" class="@($"mdc-deprecated-list-item {Class}")" href="@Href" style="@Style" ActiveClass="mdc-deprecated-list-item--activated" Match="@Match">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    @if (!string.IsNullOrWhiteSpace(Icon))
+    {<i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">@Icon</i>}
+    <span class="mdc-deprecated-list-item__text">@Label</span>
+</NavLink>
+
+@code {
+    /// <summary>
+    /// Gets or sets a collection of additional attributes that will be applied to the created element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object> AdditionalAttributes { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Set the item <c>href</c> link value.
+    /// </summary>
+    [Parameter] public string Href { get; set; }
+
+    /// <summary>
+    /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon
+    /// </summary>
+    [Parameter] public string Icon { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. Set the <see cref="NavLink"/> <c>Match</c> parameter value
+    /// </summary>
+    [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+
+    /// <summary>
+    /// Required. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+}

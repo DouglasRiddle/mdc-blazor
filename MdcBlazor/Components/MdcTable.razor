@@ -1,0 +1,291 @@
+﻿@namespace MdcBlazor
+@typeparam TItem
+@using MdcBlazor.Code
+@using System.Linq
+
+<div id="@Id" class="mdc-data-table @Class" style="@Style" @ref="tableElement">
+    <div class="mdc-data-table__table-container">
+        <table aria-label="@Label" class="mdc-data-table__table">
+            <thead>
+                <tr class="mdc-data-table__header-row">
+                    @foreach (TableHeader header in headerList)
+                    {
+                        <th class="mdc-data-table__header-cell @(header.IsNumeric ? "mdc-data-table__header-cell--numeric" : "") @(!string.IsNullOrWhiteSpace(header.SortColumn) ? "mdc-data-table-sortable-header" : "")"
+                            role="columnheader"
+                            scope="col"
+                            @onclick="@(async () => { if (!string.IsNullOrWhiteSpace(header.SortColumn)) { await SortItemsAsync(header.SortColumn); } })">
+                            <div>
+                                @if (!string.IsNullOrWhiteSpace(header.SortColumn) && SortColumn == header.SortColumn)
+                                {
+                                    @if (SortOrder == MdcTableColumnOrderBy.ascending)
+                                    {
+                                        <span class="material-icons mdc-data-table-sort-icon">arrow_upward</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="material-icons mdc-data-table-sort-icon">arrow_downward</span>
+                                    }
+                                }
+                                @header.Label
+                            </div>
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody class="mdc-data-table__content">
+                @if (Items != null && Items.Count > 0)
+                {
+                    foreach (TItem item in PageItems)
+                    {
+                        <CascadingValue Value="Selectable" IsFixed="@true">
+                            <CascadingValue Value="@this" IsFixed="@true">
+                                @TableDefinition(item)
+                            </CascadingValue>
+                        </CascadingValue>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="@(headerList.Count())" style="text-align: center;">@NoResultsMessage</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if ((Items != null && Items.Count > 0) && (ShowPagination == MdcTablePaginationDisplay.always || (ShowPagination == MdcTablePaginationDisplay.autohide && Items.Count > (int)pageSize)))
+    {
+        <div class="mdc-data-table__pagination">
+            <div class="mdc-data-table__pagination-trailing">
+                <div class="mdc-data-table__pagination-rows-per-page">
+                    <div class="mdc-data-table__pagination-rows-per-page-label">
+                        @PageLabel
+                    </div>
+
+                    <MdcSelect @bind-Value="pageSize"
+                               @ref="pageSizeSelect"
+                               Class="mdc-data-table__pagination-rows-per-page-select"
+                               SelectStyle="@MdcSelectStyle.outlined"
+                               OnChange="@(() => currentPage = 1)">
+                        @foreach (var option in MdcTablePageSizeOptions)
+                            {
+                            <MdcSelectOption Value="option" Label="@(((int)option).ToString())" />
+                            }
+                    </MdcSelect>
+                </div>
+
+                <div class="mdc-data-table__pagination-navigation">
+                    <div class="mdc-data-table__pagination-total">
+                        @(FirstDisplayedItemNumber.ToString())-@(LastDisplayedItemNumber.ToString()) of @Items.Count()
+                    </div>
+
+                    <MdcIconButton Class="mdc-data-table__pagination-button" Icon="first_page" OnClick="@(() => currentPage = 1)" data-first-page="true" Disabled="@(currentPage == 1)" />
+
+                    <MdcIconButton Class="mdc-data-table__pagination-button" Icon="chevron_left" OnClick="@(() => currentPage -= 1)" data-prev-page="true" Disabled="@(currentPage == 1)" />
+
+                    <MdcIconButton Class="mdc-data-table__pagination-button" Icon="chevron_right" OnClick="@(() => currentPage += 1)" data-next-page="true" Disabled="@(currentPage == TotalPages)" />
+
+                    <MdcIconButton Class="mdc-data-table__pagination-button" Icon="last_page" OnClick="@(() => currentPage = TotalPages)" data-last-page="true" Disabled="@(currentPage == TotalPages)" />
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private ElementReference tableElement;
+    public bool headersNotSet = true;
+    internal List<TableHeader> headerList { get; set; } = new List<TableHeader>();
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Required. Pass the <see cref="List{TItem}" /> used to generate table rows
+    /// </summary>
+    [Parameter] public List<TItem> Items { get; set; }
+
+    /// <summary>
+    /// Optional. Updates the table's bound item list
+    /// </summary>
+    [Parameter] public EventCallback<List<TItem>> ItemsChanged { get; set; }
+
+    /// <summary>
+    /// Required. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Text to display when <see cref="Items" /> count is zero
+    /// </summary>
+    [Parameter] public RenderFragment NoResultsMessage { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value indicates the table rows are selectable
+    /// </summary>
+    [Parameter] public bool Selectable { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Required. Specifies the section containing <see cref="MdcTableRow" /> content
+    /// </summary>
+    [Parameter] public RenderFragment<TItem> TableDefinition { get; set; }
+
+    [Obsolete("Will be removed in a future version. Please use UpdateListItemsAsync.")]
+    public async Task UpdateListItems(List<TItem> items, bool resetToFirstPage = true) { await UpdateListItemsAsync(items, resetToFirstPage); }
+
+    public async Task UpdateListItemsAsync(List<TItem> items, bool resetToFirstPage = true)
+    {
+        if (resetToFirstPage) { currentPage = 1; }
+
+        await ItemsChanged.InvokeAsync(items);
+        await SortItemsAsync();
+    }
+
+    /* Sorting */
+    private string SortColumn { get; set; }
+    private MdcTableColumnOrderBy SortOrder { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the initial sort column.
+    /// </summary>
+    /// <remarks>Ensure that this value matches a property name passed into <see cref="Items"/></remarks>
+    [Parameter] public string InitialSortColumn { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the initial column sort order via <see cref="MdcTableColumnOrderBy" /> enum.
+    /// </summary>
+    [Parameter] public MdcTableColumnOrderBy InitialSortOrder { get; set; }
+
+    public async Task SortItemsAsync(string columnSelector = "")
+    {
+        await Task.Run(() =>
+        {
+            if (string.IsNullOrWhiteSpace(columnSelector))
+            {
+            // Return early if column selector and sort column are both null
+            // Typically due to calling UpdateListItems on unsorted table
+            if (string.IsNullOrWhiteSpace(SortColumn)) { return; }
+
+                columnSelector = SortColumn;
+                SortOrder = SortOrder == MdcTableColumnOrderBy.ascending ? MdcTableColumnOrderBy.descending : MdcTableColumnOrderBy.ascending;
+            }
+
+        /* Determine sort order */
+            if (SortColumn == columnSelector)
+            {
+                SortOrder = SortOrder == MdcTableColumnOrderBy.ascending ? MdcTableColumnOrderBy.descending : MdcTableColumnOrderBy.ascending;
+            }
+            else
+            {
+                SortOrder = MdcTableColumnOrderBy.ascending;
+            }
+
+            ApplySort(columnSelector);
+
+        /* Record sort column */
+            SortColumn = columnSelector;
+        });
+    }
+
+    private void ApplySort(string columnSelector)
+    {
+        var sortColumn = typeof(TItem).GetProperty(columnSelector);
+
+        Items.Sort((x, y) =>
+        {
+            var xValue = sortColumn.GetValue(x);
+            var yValue = sortColumn.GetValue(y);
+
+            if (xValue == null && yValue == null) { return 0; }
+
+            if (SortOrder == MdcTableColumnOrderBy.ascending)
+            {
+                if (xValue == null) { return -1; }
+                return ((IComparable)xValue).CompareTo(yValue);
+            }
+
+            if (SortOrder == MdcTableColumnOrderBy.descending)
+            {
+                if (yValue == null) { return -1; }
+                return ((IComparable)yValue).CompareTo(xValue);
+            }
+
+            return 0;
+        });
+    }
+
+    /* Pagination */
+    private int currentPage = 1;
+    private MdcTablePageSize pageSize = MdcTablePageSize._10;
+    private MdcSelect<MdcTablePageSize> pageSizeSelect;
+
+    private int FirstDisplayedItemNumber => ((currentPage - 1) * (int)pageSize) + 1;
+    private int LastDisplayedItemNumber => (FirstDisplayedItemNumber - 1) + PageItems.Count();
+    private List<TItem> PageItems => Items.Skip((currentPage - 1) * (int)pageSize).Take((int)pageSize).ToList();
+    private int TotalPages => Math.Max(1, (int)Math.Ceiling(Items.Count() / (decimal)pageSize));
+
+    /// <summary>
+    /// Optional. Set the page label text. Defaults to "Rows per page:"
+    /// </summary>
+    [Parameter] public string PageLabel { get; set; } = "Rows per page:";
+
+    /// <summary>
+    /// Optional. Sets the initial page size via <see cref="MdcTablePageSize" /> enum. Default value is <c>_10</c>
+    /// </summary>
+    [Parameter] public MdcTablePageSize PageSize { get; set; } = MdcTablePageSize._10;
+
+    /// <summary>
+    /// Optional. Sets the pagination section visiblity via <see cref="MdcTablePaginationDisplay" /> enum. Default value is <c>always</c>
+    /// </summary>
+    [Parameter] public MdcTablePaginationDisplay ShowPagination { get; set; } = MdcTablePaginationDisplay.always;
+
+    public static readonly IReadOnlyList<MdcTablePageSize> MdcTablePageSizeOptions = Common.GetEnumListValues<MdcTablePageSize>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (!string.IsNullOrWhiteSpace(InitialSortColumn))
+            {
+                SortColumn = InitialSortColumn;
+                SortOrder = InitialSortOrder;
+
+                ApplySort(SortColumn);
+
+                StateHasChanged();
+            }
+
+            // Set page size to initial page size
+            pageSize = PageSize;
+
+            if (pageSizeSelect != null)
+            {
+                // Update page size select with inital page size value
+                await pageSizeSelect.SetValueAsync(pageSize);
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    internal void AddColumnItem(TableHeader tableColumn)
+    {
+        headerList.Add(tableColumn);
+
+        StateHasChanged();
+    }
+}

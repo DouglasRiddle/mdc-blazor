@@ -1,0 +1,104 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<button class="mdc-icon-button material-icons @Class"
+        id="@Id"
+        disabled="@Disabled"
+        style="@Style"
+        type="@Type"
+        @onclick="OnClick"
+        @ref="buttonElement"
+        @attributes="@AdditionalAttributes">
+    <div class="mdc-icon-button__ripple"></div>
+    @Icon
+    <div class="mdc-icon-button__touch"></div>
+</button>
+
+@code {
+    private ElementReference buttonElement;
+
+    /// <summary>
+    /// Gets or sets a collection of additional attributes that will be applied to the created element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object> AdditionalAttributes { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value sets this component as disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon
+    /// </summary>
+    [Parameter] public string Icon { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. Used only when within an MdcDialog. A <c>true</c> value indicates this element should be focused on dialog open
+    /// </summary>
+    [Parameter] public bool IsInitialDialogFocus { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Pass code to run when this component is clicked.
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnClick="@(() => someBool = true)"
+    /// // or
+    /// OnClick="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the button type
+    /// </summary>
+    [Parameter] public MdcButtonType Type { get; set; } = MdcButtonType.button;
+
+    /// <summary>
+    /// Set focus to this element
+    /// </summary>
+    public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", buttonElement); }
+
+    protected override void OnInitialized()
+    {
+        if (IsInitialDialogFocus)
+        {
+            if (AdditionalAttributes == null)
+            {
+                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
+            }
+            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
+            {
+                AdditionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
+            }
+        }
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.attachUnboundRipple.init", buttonElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

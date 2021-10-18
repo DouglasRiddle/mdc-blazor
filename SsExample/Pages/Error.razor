@@ -1,0 +1,45 @@
+﻿@layout SimpleLayout
+@page "/error/"
+
+<style>
+
+    .error-header-container {
+        background-color: #003767;
+        text-align: center;
+    }
+
+    .error-header-inside-content {
+        display: inline-block;
+    }
+
+    h1 {
+        color: #fff;
+        font-size: 2rem;
+        line-height: 100%;
+        padding: 1rem;
+    }
+
+    svg {
+        fill: #fff;
+        float: left;
+        height: 2rem;
+        margin-right: .75rem;
+    }
+
+    p {
+        padding: 2rem 3%;
+        text-align: center;
+    }
+</style>
+
+<div class="error-header-container">
+    <div class="error-header-inside-content">
+        <h1>
+            An error occurred while processing your request.
+        </h1>
+    </div>
+</div>
+
+<p>
+    Please try your request again later. If the error persists, please contact someone for help.
+</p>

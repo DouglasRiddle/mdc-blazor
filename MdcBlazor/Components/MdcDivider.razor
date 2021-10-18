@@ -1,0 +1,49 @@
+﻿@namespace MdcBlazor
+
+<hr id="@Id" class="mdc-deprecated-list-divider @Class @dividerClasses" role="separator" style="@Style" />
+
+@code {
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value increases the leading margin of the divider so that it does not intersect the avatar column.
+    /// </summary>
+    [Parameter] public bool Inset { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value leaves gaps on each side of divider to match padding of <c>list-item__meta</c>
+    /// </summary>
+    [Parameter] public bool Padded { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    private string dividerClasses;
+
+    private string GenerateDividerClasses()
+    {
+        string classString = "";
+        if (Inset) { classString += " mdc-deprecated-list-divider--inset"; }
+        if (Padded) { classString += " mdc-deprecated-list-divider--padded"; }
+
+        return classString;
+    }
+
+    // Set divider CSS class
+    protected override void OnInitialized()
+    {
+        dividerClasses = GenerateDividerClasses();
+
+        base.OnInitialized();
+    }
+}

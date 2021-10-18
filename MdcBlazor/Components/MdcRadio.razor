@@ -1,0 +1,55 @@
+﻿@namespace MdcBlazor
+@using MdcBlazor.Code
+@using Microsoft.AspNetCore.Components.Forms
+@inherits MdcInputComponentBase<T>
+@typeparam T
+
+<CascadingValue Value="@this" IsFixed="@true">
+    <div id="@Id" class="@Class" style="@Style">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private FieldIdentifier fieldIdentifier;
+
+    /// <summary>
+    /// Optional. Pass code to run on radio option change
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnChange="@(() => someBool = true)"
+    /// // or
+    /// OnChange="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback OnChange { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the radio group id value
+    /// </summary>
+    [Parameter] public string RadioGroupId { get; set; } = Common.GenerateId();
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    public async Task ChangeValueAsync(T newValue)
+    {
+        await ValueChanged.InvokeAsync(newValue);
+        CascadedEditContext?.NotifyFieldChanged(fieldIdentifier);
+
+        await OnChange.InvokeAsync(newValue);
+    }
+
+    protected override void OnInitialized()
+    {
+        fieldIdentifier = FieldIdentifier.Create(ValueExpression);
+
+        base.OnInitialized();
+    }
+}

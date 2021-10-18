@@ -1,0 +1,20 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Date Text Field</div>
+        <MdcTextField @bind-Value="@textField4" Type="@MdcTextFieldType.date" />
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcTextField @bind-Value=""@textField4"" LeadingIcon=""event"" Type=""@MdcTextFieldType.date"" />
+
+@code {
+    private DateTime? textField4;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private DateTime? textField4;
+}

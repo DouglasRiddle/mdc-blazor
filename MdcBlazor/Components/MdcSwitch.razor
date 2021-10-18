@@ -1,0 +1,139 @@
+﻿@inherits MdcInputComponentBase<bool>
+@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+@using MdcBlazor.Code
+@using Microsoft.AspNetCore.Components.Forms
+
+<button id="@Id"
+        class="mdc-switch @checkedClass @Class"
+        disabled="@Disabled"
+        type="button"
+        role="switch"
+        aria-checked="@Value"
+        @ref="switchElement"
+        @onclick="(async () => await ChangeValueAsync())"
+        @attributes="AdditionalAttributes">
+    <div class="mdc-switch__track"></div>
+    <div class="mdc-switch__handle-track">
+        <div class="mdc-switch__handle">
+            <div class="mdc-switch__shadow">
+                <div class="mdc-elevation-overlay"></div>
+            </div>
+            <div class="mdc-switch__ripple"></div>
+            <div class="mdc-switch__icons">
+                <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24">
+                    <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" />
+                </svg>
+                <svg class="mdc-switch__icon mdc-switch__icon--off" viewBox="0 0 24 24">
+                    <path d="M20 13H4v-2h16v2z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+</button>
+
+@if (!string.IsNullOrWhiteSpace(Label))
+{
+    <label for="@switchId">@Label</label>
+}
+
+
+@code {
+    private string checkedClass => Value ? "mdc-switch--selected" : "mdc-switch--unselected";
+    private FieldIdentifier fieldIdentifier;
+    private ElementReference switchElement;
+    private string switchId = Common.GenerateId();
+
+    /// <summary>
+    /// Optional. A <c>true</c> value sets this component as disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Used only when within an MdcDialog. A <c>true</c> value indicates this element should be focused on dialog open
+    /// </summary>
+    [Parameter] public bool IsInitialDialogFocus { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; } = "";
+
+    /// <summary>
+    /// Optional. Pass code to run on select option change
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnChange="@(() => someBool = true)"
+    /// // or
+    /// OnChange="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback OnChange { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Set focus to this element
+    /// </summary>
+    public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", switchElement); }
+
+    private async Task ChangeValueAsync()
+    {
+        await ValueChanged.InvokeAsync(!Value);
+        CascadedEditContext?.NotifyFieldChanged(fieldIdentifier);
+
+        /* We have to call the onchange event here rather than using @onchange=OnChange */
+        await OnChange.InvokeAsync(Value);
+    }
+
+    public async Task SetValueAsync(bool newValue)
+    {
+        await ValueChanged.InvokeAsync(newValue);
+        CascadedEditContext?.NotifyFieldChanged(fieldIdentifier);
+
+        await jsRuntime.InvokeVoidAsync("MdcBlazor.switch.setChecked", switchElement, Value);
+    }
+
+    public async Task SetVisibleStateAsync()
+    {
+        await jsRuntime.InvokeVoidAsync("MdcBlazor.switch.setChecked", switchElement, Value);
+    }
+
+    public async Task SetDisabledAsync()
+    {
+        await jsRuntime.InvokeVoidAsync("MdcBlazor.switch.setDisabled", switchElement, Disabled);
+    }
+
+    protected override void OnInitialized()
+    {
+        fieldIdentifier = FieldIdentifier.Create(ValueExpression);
+        if (IsInitialDialogFocus)
+        {
+            if (AdditionalAttributes == null)
+            {
+                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
+            }
+            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
+            {
+                AdditionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
+            }
+        }
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.switch.init", switchElement, Value);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

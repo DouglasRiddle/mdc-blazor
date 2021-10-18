@@ -1,0 +1,71 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<div id="@Id" class="mdc-linear-progress @Class @progressBarStyle" role="progressbar" style="@Style" @ref="linearProgressElement">
+    <div class="mdc-linear-progress__buffer">
+        <div class="mdc-linear-progress__buffer-bar"></div>
+        <div class="mdc-linear-progress__buffer-dots"></div>
+    </div>
+    <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+    </div>
+    <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+    </div>
+</div>
+
+@code {
+    private ElementReference linearProgressElement;
+    private string progressBarStyle;
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value puts the linear progress indicator in an indeterminate state. Set to <c>true</c> by default
+    /// </summary>
+    [Parameter] public bool IsIndeterminate { get; set; } = true;
+
+    /// <summary>
+    /// Optional. A <c>true</c> value reverses the direction of the linear progress indicator.
+    /// </summary>
+    [Parameter] public bool Reversed { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    protected override void OnInitialized()
+    {
+        progressBarStyle = GetProgressBarStyles();
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.linearProgress.init", linearProgressElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private string GetProgressBarStyles()
+    {
+        string classString = "";
+        if (IsIndeterminate) { classString += " mdc-linear-progress--indeterminate"; }
+        if (Reversed) { classString += " mdc-linear-progress--reversed"; }
+
+        return classString;
+    }
+}

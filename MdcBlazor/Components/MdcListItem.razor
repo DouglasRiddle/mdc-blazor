@@ -1,0 +1,144 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+@if (!string.IsNullOrWhiteSpace(Href))
+{
+    <MdcNavLink mb-data-list-item-value="@Value" Id="@Id" Class="@($"mdc-deprecated-list-item {Class} {disabledClass}")" Href="@Href" Icon="@Icon" Label="@Label" Style="@Style" />
+}
+else
+{
+    <li id="@Id" class="@($"mdc-deprecated-list-item {Class} {disabledClass}")" @onclick="OnClick" @onkeyup="OnKeyUp" style="@Style" @ref="listItemElement" role="option" data-value="@Value" mb-data-list-item-value="@Value">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        @if (!string.IsNullOrWhiteSpace(Icon) || Avatar != null)
+        {
+            <span aria-hidden="true" class="material-icons mdc-deprecated-list-item__graphic">
+                @if (!string.IsNullOrWhiteSpace(Icon))
+                {@Icon }
+            else
+            { @Avatar}
+            </span>
+        }
+
+        @if (string.IsNullOrWhiteSpace(SecondaryText))
+        {
+            <span class="mdc-deprecated-list-item__text">@Label.Trim()</span>
+        }
+        else
+        {
+            <span class="mdc-deprecated-list-item__text">
+                <span class="mdc-deprecated-list-item__primary-text">@Label.Trim()</span>
+                <span class="mdc-deprecated-list-item__secondary-text">@SecondaryText.Trim()</span>
+            </span>
+        }
+    </li>
+}
+
+
+@code {
+    private ElementReference listItemElement;
+    private string disabledClass => Disabled ? "mdc-deprecated-list-item--disabled" : "";
+
+    [CascadingParameter] private MdcList List { get; set; }
+
+    /// <summary>
+    /// Optional. Sets an avatar image for the list item
+    /// </summary>
+    [Parameter] public RenderFragment Avatar { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value sets this component as disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon
+    /// </summary>
+    [Parameter] public string Icon { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Required. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the list item <c>href</c> link value.
+    /// </summary>
+    /// <remarks>
+    /// When an <c>Href</c> value is set <see cref="OnClick" /> and <see cref="OnKeyUp" /> parameters cannot be used
+    /// </remarks>
+    [Parameter] public string Href { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run when this component is clicked.
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnClick="@(() => someBool = true)"
+    /// // or
+    /// OnClick="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run on key up inside this list item
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnKeyUp="@(() => someBool = true)"
+    /// // or
+    /// OnKeyUp="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the second line text in the list item
+    /// </summary>
+    [Parameter] public string SecondaryText { get; set; }
+
+    /// <summary>
+    /// Required. The value tied to this component
+    /// </summary>
+    [Parameter] public string Value { get; set; }
+
+    /// <summary>
+    /// Set focus to this element
+    /// </summary>
+    public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", listItemElement); }
+
+    protected override void OnInitialized()
+    {
+        if (Avatar != null) { List.ContainsAvatar(); }
+        if (!string.IsNullOrWhiteSpace(SecondaryText)) { List.ContainsSecondLine(); }
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && Href == null)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.attachRipple.init", listItemElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

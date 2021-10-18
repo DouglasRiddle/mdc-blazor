@@ -1,0 +1,23 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Icon Button</div>
+        <MdcIconButton Icon="remove_circle" OnClick="@(() => iconButtonClickCount -= 1)" Style="color: #b00020;" />
+        <MdcIconButton Icon="add_circle" OnClick="@(() => iconButtonClickCount += 1)" Style="color: #20b000;" />
+        <div>Icon Button Click Count: @iconButtonClickCount</div>
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcIconButton Icon=""remove_circle"" OnClick=""@(() => iconButtonClickCount -= 1)"" Style=""color: #b00020;"" />
+<MdcIconButton Icon=""add_circle"" OnClick=""@(() => iconButtonClickCount += 1)"" Style=""color: #20b000;"" />
+<div>Icon Button Click Count: @iconButtonClickCount</div>
+
+@code {
+    private int iconButtonClickCount = 0;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private int iconButtonClickCount = 0;
+}

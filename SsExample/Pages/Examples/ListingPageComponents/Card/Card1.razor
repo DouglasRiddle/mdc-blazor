@@ -1,0 +1,98 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Elevated Card</div>
+        <MdcCard DisplayType="MdcCardDisplay.elevated">
+            <MdcCardContent ContentType="MdcCardContentType.text">
+                This is a base card with some text.
+            </MdcCardContent>
+            <MdcCardContent ContentType="MdcCardContentType.actions">
+                <MdcCardButtons>
+                    <MdcCardButton Label="Some Button" OnClick="(async () => await cardButtonClick.ShowAsync())" Type="@MdcButtonType.button" />
+                </MdcCardButtons>
+                <MdcCardIcons>
+                    <MdcCardIcon Title="Warning" Icon="warning" OnClick="(async () => await cardWarningIconClick.ShowAsync())" />
+                    <MdcCardIconToggle @bind-Value="@elevatedCardToggleValue" Icon_On="speaker_notes" Icon_Off="speaker_notes_off" Title="Notes" />
+                </MdcCardIcons>
+            </MdcCardContent>
+        </MdcCard>
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcCard DisplayType=""MdcCardDisplay.elevated"">
+    <MdcCardContent ContentType=""MdcCardContentType.text"">
+        This is a base card with some text.
+    </MdcCardContent>
+    <MdcCardContent ContentType=""MdcCardContentType.actions"">
+        <MdcCardButtons>
+            <MdcCardButton Label=""Some Button"" OnClick=""(async () => await cardButtonClick.ShowAsync())"" Type=""@MdcButtonType.button"" />
+        </MdcCardButtons>
+        <MdcCardIcons>
+            <MdcCardIcon Title=""Warning"" Icon=""warning"" OnClick=""(async () => await cardWarningIconClick.ShowAsync())"" />
+            <MdcCardIconToggle @bind-Value=""@elevatedCardToggleValue"" Icon_On=""speaker_notes"" Icon_Off=""speaker_notes_off"" Title=""Notes"" />
+        </MdcCardIcons>
+    </MdcCardContent>
+</MdcCard>
+
+<MdcDialog @ref=""cardButtonClick"" Title=""Some Button Clicked"">
+    <MdcDialogSurface>
+        <Content>Elevated Card ""Some Button"" was clicked.</Content>
+        <Actions>
+            <MdcDialogActions>
+                <MdcDialogButton OnClick=""(async () => await cardButtonClick.HideAsync())"" ButtonStyle=MdcButtonStyle.raised Type=""@MdcButtonType.button"" Label=""OK"" />
+            </MdcDialogActions>
+        </Actions>
+    </MdcDialogSurface>
+</MdcDialog>
+
+<MdcDialog @ref=""cardWarningIconClick"" Title=""Card Warning Icon"">
+    <MdcDialogSurface>
+        <Content>Elevated Card warning icon was clicked.</Content>
+        <Actions>
+            <MdcDialogActions>
+                <MdcDialogButton OnClick=""(async () => await cardWarningIconClick.HideAsync())"" ButtonStyle=MdcButtonStyle.raised Type=""@MdcButtonType.button"" Label=""OK"" />
+            </MdcDialogActions>
+        </Actions>
+    </MdcDialogSurface>
+</MdcDialog>
+
+@code {    
+    private bool elevatedCardToggleValue = true;
+    private MdcDialog cardButtonClick;
+    private MdcDialog cardWarningIconClick;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+<div class="flow">
+    <MdcDialog @ref="cardButtonClick" Title="Some Button Clicked">
+        <MdcDialogSurface>
+            <Content>Elevated Card "Some Button" was clicked.</Content>
+            <Actions>
+                <MdcDialogActions>
+                    <MdcDialogButton OnClick="(async () => await cardButtonClick.HideAsync())" ButtonStyle=MdcButtonStyle.raised Type="@MdcButtonType.button" Label="OK" />
+                </MdcDialogActions>
+            </Actions>
+        </MdcDialogSurface>
+    </MdcDialog>
+</div>
+
+<div class="flow">
+    <MdcDialog @ref="cardWarningIconClick" Title="Card Warning Icon">
+        <MdcDialogSurface>
+            <Content>Elevated Card warning icon was clicked.</Content>
+            <Actions>
+                <MdcDialogActions>
+                    <MdcDialogButton OnClick="(async () => await cardWarningIconClick.HideAsync())" ButtonStyle=MdcButtonStyle.raised Type="@MdcButtonType.button" Label="OK" />
+                </MdcDialogActions>
+            </Actions>
+        </MdcDialogSurface>
+    </MdcDialog>
+</div>
+
+@code {
+    private bool elevatedCardToggleValue = true;
+    private MdcDialog cardButtonClick;
+    private MdcDialog cardWarningIconClick;
+}

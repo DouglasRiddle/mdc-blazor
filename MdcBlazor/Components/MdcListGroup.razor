@@ -1,0 +1,24 @@
+﻿@namespace MdcBlazor
+
+<div id="@Id" class="mdc-deprecated-list-group @Class" style="@Style">
+    @ChildContent
+</div>
+
+@code  {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+}

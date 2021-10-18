@@ -1,0 +1,79 @@
+﻿@inherits MdcInputComponentBase<bool>
+@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+@using MdcBlazor.Code
+
+<div class="mdc-touch-target-wrapper">
+    <div id="@Id" class="mdc-form-field @Class" style="@Style" @ref="checkboxFormElement">
+        <div class="mdc-checkbox mdc-checkbox--touch @disabledClass" @ref="checkboxElement">
+            <input class="mdc-checkbox__native-control" disabled="@Disabled" id="@checkboxId" type="checkbox" @bind="CurrentValue" @attributes="@AdditionalAttributes" />
+            <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                    <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+            <div class="mdc-checkbox__ripple"></div>
+        </div>
+        <label for="@checkboxId">@Label</label>
+    </div>
+</div>
+
+@code {
+    private string checkboxId = Common.GenerateId();
+    private ElementReference checkboxElement;
+    private ElementReference checkboxFormElement;
+    private string disabledClass => Disabled ? "mdc-checkbox--disabled" : "";
+
+    /// <summary>
+    /// Optional. A <c>true</c> value sets this component as disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Used only when within an MdcDialog. A <c>true</c> value indicates this element should be focused on dialog open
+    /// </summary>
+    [Parameter] public bool IsInitialDialogFocus { get; set; } = false;
+
+    /// <summary>
+    /// Required. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; } = "";
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Set focus to this element
+    /// </summary>
+    public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", checkboxElement); }
+
+    protected override void OnInitialized()
+    {
+        if (IsInitialDialogFocus)
+        {
+            if (AdditionalAttributes == null)
+            {
+                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
+            }
+            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
+            {
+                AdditionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
+            }
+        }
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.checkbox.init", checkboxElement, checkboxFormElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

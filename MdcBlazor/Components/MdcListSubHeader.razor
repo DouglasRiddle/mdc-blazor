@@ -1,0 +1,25 @@
+﻿@namespace MdcBlazor
+
+<h3 id="@Id" class="@MdcTypography.H3 mdc-deprecated-list-group__subheader @Class" style="@Style">@Label</h3>
+
+@code {
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Required. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+}

@@ -1,0 +1,194 @@
+﻿@inherits MdcInputComponentBase<T>
+@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+@typeparam T
+@using MdcBlazor.Code
+@using Microsoft.AspNetCore.Components.Forms
+
+<div id="@Id" class="mdc-select @Class @disabledClass @noLabelClass @styleClass @FieldClass" style="@Style" @ref="selectElement">
+    <div class="mdc-select__anchor"
+         role="button"
+         aria-haspopup="listbox"
+         aria-expanded="false"
+         aria-labelledby="@selectLabelId"
+         @attributes="AdditionalAttributes">
+
+        @if (SelectStyle == MdcSelectStyle.outlined)
+        {
+            <span class="mdc-notched-outline">
+                <span class="mdc-notched-outline__leading"></span>
+                @if (hasLabel)
+                {
+                    <span class="mdc-notched-outline__notch">
+                        <span id="@selectLabelId" class="mdc-floating-label">@Label</span>
+                    </span>
+                }
+                <span class="mdc-notched-outline__trailing"></span>
+            </span>
+        }
+        else
+        {
+            <span class="mdc-select__ripple"></span>
+            @if (hasLabel)
+            {
+                <span id="@selectLabelId" class="mdc-floating-label">@Label</span>
+            }
+        }
+
+
+        <span class="mdc-select__selected-text-container @FieldClass">
+            <span class="mdc-select__selected-text"></span>
+        </span>
+        <span class="mdc-select__dropdown-icon">
+            <svg class="mdc-select__dropdown-icon-graphic"
+                 viewBox="7 10 10 5" focusable="false">
+                <polygon class="mdc-select__dropdown-icon-inactive"
+                         stroke="none"
+                         fill-rule="evenodd"
+                         points="7 10 12 15 17 10">
+                </polygon>
+                <polygon class="mdc-select__dropdown-icon-active"
+                         stroke="none"
+                         fill-rule="evenodd"
+                         points="7 15 12 10 17 15">
+                </polygon>
+            </svg>
+        </span>
+        @if (SelectStyle == MdcSelectStyle.flat)
+        {
+            <span class="mdc-line-ripple"></span>
+        }
+    </div>
+
+    <div class="mdc-select__menu mdc-menu mdc-menu-surface @positionFixedClass">
+        <MdcList role="listbox">
+            <CascadingValue Value="@this" IsFixed="@true">
+                @ChildContent
+            </CascadingValue>
+        </MdcList>
+    </div>
+</div>
+
+@code  {
+    /* See https://chrissainty.com/creating-bespoke-input-components-for-blazor-from-scratch/ */
+
+    private string disabledClass => Disabled ? "mdc-select--disabled" : "";
+    private FieldIdentifier fieldIdentifier;
+    private bool hasLabel;
+    private string positionFixedClass;
+    private string noLabelClass;
+    private ElementReference selectElement;
+    private string selectLabelId = Common.GenerateId();
+    private string styleClass;
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value sets this component as disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Optional. Used only when within an MdcDialog. A <c>true</c> value indicates this element should be focused on dialog open
+    /// </summary>
+    [Parameter] public bool IsInitialDialogFocus { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the select menu list to a fixed position. This allows displaying beyond the borders of a dialog container.
+    /// </summary>
+    [Parameter] public bool MenuPositionFixed { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run on select option change
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnChange="@(() => someBool = true)"
+    /// // or
+    /// OnChange="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback OnChange { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the button style via <see cref="MdcSelectStyle" /> enum. Defaults to "flat".
+    /// </summary>
+    [Parameter] public MdcSelectStyle SelectStyle { get; set; } = MdcSelectStyle.flat;
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Set focus to this element
+    /// </summary>
+    public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", selectElement); }
+
+    public async Task ChangeValueAsync(T newValue)
+    {
+        await ValueChanged.InvokeAsync(newValue);
+        CascadedEditContext?.NotifyFieldChanged(fieldIdentifier);
+
+        /* Since we are not using a <select> we have to call the onchange
+         * event here rather than using @onchange=OnChange */
+        await OnChange.InvokeAsync(newValue);
+    }
+
+    public async Task SetValueAsync(T newValue)
+    {
+        await ValueChanged.InvokeAsync(newValue);
+        CascadedEditContext?.NotifyFieldChanged(fieldIdentifier);
+
+        await jsRuntime.InvokeVoidAsync("MdcBlazor.select.setValue", selectElement, CurrentValueAsString);
+    }
+
+    public async Task SetVisibleStateAsync()
+    {
+        await jsRuntime.InvokeVoidAsync("MdcBlazor.select.setValue", selectElement, CurrentValueAsString);
+    }
+
+    public async Task SetDisabledAsync()
+    {
+        await jsRuntime.InvokeVoidAsync("MdcBlazor.select.setDisabled", selectElement, Disabled);
+    }
+
+    protected override void OnInitialized()
+    {
+        hasLabel = !string.IsNullOrEmpty(Label);
+        positionFixedClass = MenuPositionFixed ? "mdc-menu-surface--fixed" : "mdc-menu-surface--fullwidth";
+        noLabelClass = hasLabel ? "" : "mdc-select--no-label";
+        styleClass = SelectStyle == MdcSelectStyle.outlined ? "mdc-select--outlined" : "mdc-select--filled";
+
+        fieldIdentifier = FieldIdentifier.Create(ValueExpression);
+        if (IsInitialDialogFocus)
+        {
+            if (AdditionalAttributes == null)
+            {
+                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
+            }
+            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
+            {
+                AdditionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
+            }
+        }
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.select.init", selectElement, CurrentValueAsString);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

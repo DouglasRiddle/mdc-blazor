@@ -1,0 +1,21 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Normal Switch</div>
+        <MdcSwitch Label="Switch Option" @bind-Value="switchValue" />
+        <div>Option Value = @switchValue</div>
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcSwitch Label=""Switch Option"" @bind-Value=""switchValue"" />
+<div>Option Value = @switchValue</div>
+
+@code {
+    private bool switchValue;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private bool switchValue;
+}

@@ -1,0 +1,19 @@
+[
+	{
+		"outputFileName": "wwwroot/mdc-blazor.min.css",
+		"inputFiles": [
+			"wwwroot/libraries/icon.css",
+			"wwwroot/libraries/material-components-web.min.css",
+			"wwwroot/mdc-blazor.css"
+		]
+	},
+	{
+		"outputFileName": "wwwroot/mdc-blazor.min.js",
+		"inputFiles": [
+			"wwwroot/libraries/material-components-web.min.js",
+			"wwwroot/mdc-blazor.js"
+		],
+		"minify": { "enabled": true },
+		"sourceMap": false
+	}
+]

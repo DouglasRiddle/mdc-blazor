@@ -1,0 +1,80 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Select First Value on Enter</div>
+        <div>
+            <MdcAutoCompleteTextField Items="@autocompleteListItems" @bind-Value="autocompleteValue" Label="Name List" NumberOfElementsInList="5" ValueMustBeInList="true" />
+        </div>
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<div>
+    <MdcAutoCompleteTextField Items=""@autocompleteListItems"" @bind-Value=""autocompleteValue"" Label=""Name List"" NumberOfElementsInList=""5"" ValueMustBeInList=""true"" />
+</div>
+
+@code {
+    private string autocompleteValue;
+
+    private List<MdcAutoCompleteListItem> autocompleteListItems = new List<MdcAutoCompleteListItem>
+    {
+        new MdcAutoCompleteListItem { Value = ""Casey Mata (1304267)"", Label = ""Casey Mata"" },
+        new MdcAutoCompleteListItem { Value = ""Madeline Chase (1683798)"", Label = ""Madeline Chase"" },
+        new MdcAutoCompleteListItem { Value = ""Braylon Wade (1353033)"", Label = ""Braylon Wade"" },
+        new MdcAutoCompleteListItem { Value = ""Madilynn Franklin (1683588)"", Label = ""Madilynn Franklin"" },
+        new MdcAutoCompleteListItem { Value = ""Nelson Mckenzie (1323050)"", Label = ""Nelson Mckenzie"" },
+        new MdcAutoCompleteListItem { Value = ""Zayden Myers (1587111)"", Label = ""Zayden Myers"" },
+        new MdcAutoCompleteListItem { Value = ""Douglas Lang (1678696)"", Label = ""Douglas Lang"" },
+        new MdcAutoCompleteListItem { Value = ""Skylar Wiley (1666589)"", Label = ""Skylar Wiley"" },
+        new MdcAutoCompleteListItem { Value = ""Valentin Kent (1361205)"", Label = ""Valentin Kent"" },
+        new MdcAutoCompleteListItem { Value = ""Adelaide Dunlap (1303849)"", Label = ""Adelaide Dunlap"" },
+        new MdcAutoCompleteListItem { Value = ""Karlee Mcknight (1782566)"", Label = ""Karlee Mcknight"" },
+        new MdcAutoCompleteListItem { Value = ""Cameron Clay (1482496)"", Label = ""Cameron Clay"" },
+        new MdcAutoCompleteListItem { Value = ""Hayley Howard (1372383)"", Label = ""Hayley Howard"" },
+        new MdcAutoCompleteListItem { Value = ""Aden Barrett (1639280)"", Label = ""Aden Barrett"" },
+        new MdcAutoCompleteListItem { Value = ""Aylin Stark (1542084)"", Label = ""Aylin Stark"" },
+        new MdcAutoCompleteListItem { Value = ""Brooklyn Hutchinson (1301320)"", Label = ""Brooklyn Hutchinson"" },
+        new MdcAutoCompleteListItem { Value = ""Asia Newman (1402954)"", Label = ""Asia Newman"" },
+        new MdcAutoCompleteListItem { Value = ""Vanessa Gibson (1396952)"", Label = ""Vanessa Gibson"" },
+        new MdcAutoCompleteListItem { Value = ""Zaria Mcfarland (1426345)"", Label = ""Zaria Mcfarland"" },
+        new MdcAutoCompleteListItem { Value = ""Clare Walsh (1781241)"", Label = ""Clare Walsh"" },
+        new MdcAutoCompleteListItem { Value = ""Alexus Dickson (1390545)"", Label = ""Alexus Dickson"" },
+        new MdcAutoCompleteListItem { Value = ""Emiliano Chavez (1554637)"", Label = ""Emiliano Chavez"" },
+        new MdcAutoCompleteListItem { Value = ""Justine Fernandez (1383699)"", Label = ""Justine Fernandez"" },
+        new MdcAutoCompleteListItem { Value = ""Sierra Richard (1226882)"", Label = ""Sierra Richard"" }
+    };
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private string autocompleteValue;
+
+    private List<MdcAutoCompleteListItem> autocompleteListItems = new List<MdcAutoCompleteListItem>
+{
+        new MdcAutoCompleteListItem { Value = "Casey Mata (1304267)", Label = "Casey Mata" },
+        new MdcAutoCompleteListItem { Value = "Madeline Chase (1683798)", Label = "Madeline Chase" },
+        new MdcAutoCompleteListItem { Value = "Braylon Wade (1353033)", Label = "Braylon Wade" },
+        new MdcAutoCompleteListItem { Value = "Madilynn Franklin (1683588)", Label = "Madilynn Franklin" },
+        new MdcAutoCompleteListItem { Value = "Nelson Mckenzie (1323050)", Label = "Nelson Mckenzie" },
+        new MdcAutoCompleteListItem { Value = "Zayden Myers (1587111)", Label = "Zayden Myers" },
+        new MdcAutoCompleteListItem { Value = "Douglas Lang (1678696)", Label = "Douglas Lang" },
+        new MdcAutoCompleteListItem { Value = "Skylar Wiley (1666589)", Label = "Skylar Wiley" },
+        new MdcAutoCompleteListItem { Value = "Valentin Kent (1361205)", Label = "Valentin Kent" },
+        new MdcAutoCompleteListItem { Value = "Adelaide Dunlap (1303849)", Label = "Adelaide Dunlap" },
+        new MdcAutoCompleteListItem { Value = "Karlee Mcknight (1782566)", Label = "Karlee Mcknight" },
+        new MdcAutoCompleteListItem { Value = "Cameron Clay (1482496)", Label = "Cameron Clay" },
+        new MdcAutoCompleteListItem { Value = "Hayley Howard (1372383)", Label = "Hayley Howard" },
+        new MdcAutoCompleteListItem { Value = "Aden Barrett (1639280)", Label = "Aden Barrett" },
+        new MdcAutoCompleteListItem { Value = "Aylin Stark (1542084)", Label = "Aylin Stark" },
+        new MdcAutoCompleteListItem { Value = "Brooklyn Hutchinson (1301320)", Label = "Brooklyn Hutchinson" },
+        new MdcAutoCompleteListItem { Value = "Asia Newman (1402954)", Label = "Asia Newman" },
+        new MdcAutoCompleteListItem { Value = "Vanessa Gibson (1396952)", Label = "Vanessa Gibson" },
+        new MdcAutoCompleteListItem { Value = "Zaria Mcfarland (1426345)", Label = "Zaria Mcfarland" },
+        new MdcAutoCompleteListItem { Value = "Clare Walsh (1781241)", Label = "Clare Walsh" },
+        new MdcAutoCompleteListItem { Value = "Alexus Dickson (1390545)", Label = "Alexus Dickson" },
+        new MdcAutoCompleteListItem { Value = "Emiliano Chavez (1554637)", Label = "Emiliano Chavez" },
+        new MdcAutoCompleteListItem { Value = "Justine Fernandez (1383699)", Label = "Justine Fernandez" },
+        new MdcAutoCompleteListItem { Value = "Sierra Richard (1226882)", Label = "Sierra Richard" }
+    };
+}

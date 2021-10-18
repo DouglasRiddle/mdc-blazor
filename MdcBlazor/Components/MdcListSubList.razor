@@ -1,0 +1,93 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<li id="@Id" class="mdc-deprecated-list-item mdc-sub-list @Class" style="@Style" @onclick="Toggle" @ref="listItemElement">
+    @if (!string.IsNullOrWhiteSpace(Icon))
+    {
+        <span class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">@Icon</span>
+    }
+    <span class="mdc-deprecated-list-item__text">@Label</span>
+    <span class="material-icons mdc-deprecated-list-item__graphic" style="margin-left: auto; margin-right: 0;" aria-hidden="true">@expansionIcon</span>
+</li>
+
+@if (isExpanded)
+{
+    <MdcList Style="margin-left: 1rem;">
+        @ChildContent
+    </MdcList>
+}
+
+@code  {
+    private bool isExpanded;
+    private ElementReference listItemElement;
+    private string expansionIcon => isExpanded ? "expand_less" : "expand_more";
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon
+    /// </summary>
+    [Parameter] public string Icon { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Required. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run when this component is clicked.
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnClick="@(() => someBool = true)"
+    /// // or
+    /// OnClick="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value indicates the sublist will load in the expanded state
+    /// </summary>
+    [Parameter] public bool StartExpanded { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    private void Toggle() => Toggle(!isExpanded);
+    private void Toggle(bool expandsionState)
+    {
+        isExpanded = expandsionState;
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        isExpanded = StartExpanded;
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.attachRipple.init", listItemElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

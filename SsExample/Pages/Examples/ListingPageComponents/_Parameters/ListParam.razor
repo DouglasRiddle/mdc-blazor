@@ -1,0 +1,64 @@
+﻿@namespace SsExample
+
+<ParameterSection>
+    <div>
+        Expected Layout<br /><pre><code>@(@"<MdcListGroup> /* Optional */
+    <MdcList>
+        <MdcListSubHeader /> /* Optional */
+            <MdcListItem />  
+            <MdcListItem />
+        <MdcListSubList> /* Optional */
+            <MdcListItem />
+        </MdcListSubList>
+    </MdcList>
+    <MdcList>
+        <MdcListItem />
+    </MdcList>
+</MdcListGroup>")</code></pre>
+    </div>
+    <div>
+        Universal Parameters<br />
+        <strong>Class</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to pass CSS class names
+    </div>
+    <div><strong>Id</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to pass component id string</div>
+    <div><strong>Style</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to pass inline-CSS</div>
+
+    <MdcDivider />
+
+    <div>
+        <code>MdcList</code> Parameters<br />
+        <strong>IsSingleSelection</strong> (<code>bool</code>)<br /><em>Optional</em><br />If true, <code>space</code>, <code>enter</code>, and <code>click</code> events will trigger a single list item to become selected and any other previously selected items to become deselected. Default value is <code>false</code>
+    </div>
+
+    <MdcDivider />
+
+    <div>
+        <code>MdcListSubHeader</code> Parameters<br />
+        <strong>Label</strong> (<code>string</code>)<br /><strong>Required</strong><br />Used to set subheader text
+    </div>
+
+    <MdcDivider />
+
+    <div>
+        <code>MdcListSubList</code> Parameters<br />
+        <strong>Icon</strong> (<code>string</code>)<br /><em>Optional</em><br />Add <a href="https://material.io/resources/icons/?style=baseline" target="_blank">Material Icon</a> to sublist header
+    </div>
+    <div><strong>Label</strong> (<code>string</code>)<br /><strong>Required</strong><br />Used to set sublist header text</div>
+    <div><strong>OnClick</strong> (<code>@("EventCallback<MouseEventArgs>")</code>)<br /><em>Optional</em><br />Used to pass method to run on sublist header click</div>
+    <div><strong>StartExpanded</strong> (<code>bool</code>)<br /><em>Optional</em><br />If true, sublist will load in the expanded state. Default value is <code>false</code></div>
+
+    <MdcDivider />
+
+    <div>
+        <code>MdcListItem</code> Parameters<br />
+        <strong>Avatar</strong> (<code>RenderFragment</code>)<br /><em>Optional</em><br />Used to pass an avatar image for the list item
+    </div>
+    <div><strong>Disabled</strong> (<code>bool</code>)<br /><em>Optional</em><br />Used to set list item enabled/disabled state</div>
+    <div><strong>Icon</strong> (<code>string</code>)<br /><em>Optional</em><br />Add <a href="https://material.io/resources/icons/?style=baseline" target="_blank">Material Icon</a> to sublist header</div>
+    <div><strong>Label</strong> (<code>string</code>)<br /><strong>Required</strong><br />Used to set sublist header text</div>
+    <div><strong>Href</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to pass href link. <code>OnClick</code> and <code>OnKeyUp</code> parameters cannot be used when a Href value is passed</div>
+    <div><strong>OnClick</strong> (<code>@("EventCallback<MouseEventArgs>")</code>)<br /><em>Optional</em><br />Used to pass method to run on list item click. Cannot be used when a Href value is passed</div>
+    <div><strong>OnKeyUp</strong> (<code>@("EventCallback<KeyboardEventArgs>")</code>)<br /><em>Optional</em><br />Used to pass method to run on key up. Cannot be used when a Href value is passed</div>
+    <div><strong>SecondaryText</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to set the second line of text for the list item</div>
+    <div><strong>Value</strong> (<code>string</code>)<br /><em>Optional</em><br />Used to set a list item value for use in <code>MdcAutoCompleteTextField</code> component</div>
+</ParameterSection>

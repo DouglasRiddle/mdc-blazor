@@ -1,0 +1,189 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Table</div>
+        <MdcTable @bind-Items="tableItems"
+                  Context="exampleItem"
+                  InitialSortColumn="PersonName"
+                  PageSize="@MdcTablePageSize._5"
+                  Selectable="true">
+            <TableDefinition>
+                <MdcTableRow OnClick="@(async () => await PopulateDialog(exampleItem))">
+                    <MdcTableColumn RowItem="exampleItem" HeaderText="Person" SortColumn="PersonName">@($"{exampleItem.PersonName} ({exampleItem.Id})")</MdcTableColumn>
+                    <MdcTableColumn RowItem="exampleItem" HeaderText="Fee" IsNumeric="true" SortColumn="Fee">@exampleItem.Fee.ToString("c")</MdcTableColumn>
+                    <MdcTableColumn RowItem="exampleItem" HeaderText="Date Paid" SortColumn="DatePaid">@exampleItem.DatePaid.ToString("M/dd/yyyy")</MdcTableColumn>
+                </MdcTableRow>
+            </TableDefinition>
+            <NoResultsMessage>No results found</NoResultsMessage>
+        </MdcTable>
+
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcTable @bind-Items=""tableItems""
+            Context=""exampleItem""
+            InitialSortColumn=""PersonName""
+            PageSize=""@MdcTablePageSize._5""
+            Selectable=""true"">
+    <TableDefinition>
+        <MdcTableRow OnClick=""@(async () => await PopulateDialog(exampleItem))"">
+            <MdcTableColumn RowItem=""exampleItem"" HeaderText=""Person"" SortColumn=""PersonName"">@($""{exampleItem.PersonName} ({exampleItem.Id})"")</MdcTableColumn>
+            <MdcTableColumn RowItem=""exampleItem"" HeaderText=""Fee"" IsNumeric=""true"" SortColumn=""Fee"">@exampleItem.Fee.ToString(""c"")</MdcTableColumn>
+            <MdcTableColumn RowItem=""exampleItem"" HeaderText=""Date Paid"" SortColumn=""DatePaid"">@exampleItem.DatePaid.ToString(""M/dd/yyyy"")</MdcTableColumn>
+        </MdcTableRow>
+    </TableDefinition>
+    <NoResultsMessage>No results found</NoResultsMessage>
+</MdcTable>
+
+<MdcDialog @ref=""tablePersonDialog"" Title=""Person Details"">
+    <MdcDialogSurface>
+        <Content>
+            <div class=""flow"">
+                <p><MdcTextField @bind-Value=""dialogObject.PersonName"" Label=""Name"" Class=""full-width"" /></p>
+                <p><MdcTextField @bind-Value=""dialogObject.Id"" Label=""Id"" Class=""full-width"" /></p>
+                <p><MdcTextField @bind-Value=""dialogObject.Fee"" Label=""Fee"" LeadingIcon=""attach_money"" Class=""full-width"" /></p>
+                <p><MdcTextField @bind-Value=""dialogObject.DatePaid"" Label=""Date Paid"" Type=""@MdcTextFieldType.date"" Class=""full-width"" /></p>
+            </div>
+        </Content>
+        <Actions>
+            <MdcDialogActions>
+                <MdcDialogButton OnClick=""@(async () => await tablePersonDialog.HideAsync())"" Type=""@MdcButtonType.button"" Label=""Cancel"" />
+            </MdcDialogActions>
+        </Actions>
+    </MdcDialogSurface>
+</MdcDialog>
+
+@code {    
+    private MdcDialog tablePersonDialog;
+    private TableExampleItem dialogObject = new TableExampleItem();
+
+    private async Task PopulateDialog(TableExampleItem clickedRow)
+    {
+        await Task.Run(() => {
+            dialogObject = new TableExampleItem
+            {
+                Id = clickedRow.Id,
+                PersonName = clickedRow.PersonName,
+                Fee = clickedRow.Fee,
+                DatePaid = clickedRow.DatePaid
+            };
+        });
+
+        await tablePersonDialog.ShowAsync();
+    }
+
+    public class TableExampleItem
+    {
+        public int Id { get; set; }
+        public string PersonName { get; set; }
+        public decimal Fee { get; set; }
+        public DateTime DatePaid { get; set; }
+    }
+
+    private List<TableExampleItem> tableItems = new List<TableExampleItem>
+    {
+        new TableExampleItem { Id = 1304267, PersonName = ""Casey Mata"", Fee = 74, DatePaid = DateTime.Parse(""8 / 20 / 2018"")},
+        new TableExampleItem { Id = 1683798, PersonName = ""Madeline Chase"", Fee = 36, DatePaid = DateTime.Parse(""9/28/2018"") },
+        new TableExampleItem { Id = 1353033, PersonName = ""Braylon Wade"", Fee = 72, DatePaid = DateTime.Parse(""10/2/2018"") },
+        new TableExampleItem { Id = 1683588, PersonName = ""Madilynn Franklin"", Fee = 100, DatePaid = DateTime.Parse(""10/26/2018"") },
+        new TableExampleItem { Id = 1323050, PersonName = ""Nelson Mckenzie"", Fee = 93, DatePaid = DateTime.Parse(""11/6/2018"") },
+        new TableExampleItem { Id = 1587111, PersonName = ""Zayden Myers"", Fee = 97, DatePaid = DateTime.Parse(""1/2/2019"") },
+        new TableExampleItem { Id = 1678696, PersonName = ""Douglas Lang"", Fee = 7, DatePaid = DateTime.Parse(""1/14/2019"") },
+        new TableExampleItem { Id = 1666589, PersonName = ""Skylar Wiley"", Fee = 90, DatePaid = DateTime.Parse(""4/25/2019"") },
+        new TableExampleItem { Id = 1361205, PersonName = ""Valentin Kent"", Fee = 84, DatePaid = DateTime.Parse(""5/6/2019"") },
+        new TableExampleItem { Id = 1303849, PersonName = ""Adelaide Dunlap"", Fee = 77, DatePaid = DateTime.Parse(""6/18/2019"") },
+        new TableExampleItem { Id = 1782566, PersonName = ""Karlee Mcknight"", Fee = 56, DatePaid = DateTime.Parse(""7/9/2019"") },
+        new TableExampleItem { Id = 1482496, PersonName = ""Cameron Clay"", Fee = 91, DatePaid = DateTime.Parse(""10/17/2019"") },
+        new TableExampleItem { Id = 1372383, PersonName = ""Hayley Howard"", Fee = 74, DatePaid = DateTime.Parse(""11/28/2019"") },
+        new TableExampleItem { Id = 1639280, PersonName = ""Aden Barrett"", Fee = 10, DatePaid = DateTime.Parse(""12/9/2019"") },
+        new TableExampleItem { Id = 1542084, PersonName = ""Aylin Stark"", Fee = 8, DatePaid = DateTime.Parse(""1/13/2020"") },
+        new TableExampleItem { Id = 1301320, PersonName = ""Brooklyn Hutchinson"", Fee = 15, DatePaid = DateTime.Parse(""1/20/2020"") },
+        new TableExampleItem { Id = 1402954, PersonName = ""Asia Newman"", Fee = 33, DatePaid = DateTime.Parse(""1/21/2020"") },
+        new TableExampleItem { Id = 1396952, PersonName = ""Vanessa Gibson"", Fee = 23, DatePaid = DateTime.Parse(""4/2/2020"") },
+        new TableExampleItem { Id = 1426345, PersonName = ""Zaria Mcfarland"", Fee = 27, DatePaid = DateTime.Parse(""4/9/2020"") },
+        new TableExampleItem { Id = 1781241, PersonName = ""Clare Walsh"", Fee = 48, DatePaid = DateTime.Parse(""7/27/2020"") },
+        new TableExampleItem { Id = 1390545, PersonName = ""Alexus Dickson"", Fee = 30, DatePaid = DateTime.Parse(""8/5/2020"") },
+        new TableExampleItem { Id = 1554637, PersonName = ""Emiliano Chavez"", Fee = 66, DatePaid = DateTime.Parse(""11/11/2020"") },
+        new TableExampleItem { Id = 1383699, PersonName = ""Justine Fernandez"", Fee = 25, DatePaid = DateTime.Parse(""12/11/2020"") },
+        new TableExampleItem { Id = 1226882, PersonName = ""Sierra Richard"", Fee = 22, DatePaid = DateTime.Parse(""12/17/2020"") }
+    };
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+<MdcDialog @ref="tablePersonDialog" Title="Person Details">
+    <MdcDialogSurface>
+        <Content>
+            <div class="flow">
+                <p><MdcTextField @bind-Value="dialogObject.PersonName" Label="Name" Class="full-width" /></p>
+                <p><MdcTextField @bind-Value="dialogObject.Id" Label="Id" Class="full-width" /></p>
+                <p><MdcTextField @bind-Value="dialogObject.Fee" Label="Fee" LeadingIcon="attach_money" Class="full-width" /></p>
+                <p><MdcTextField @bind-Value="dialogObject.DatePaid" Label="Date Paid" Type="@MdcTextFieldType.date" Class="full-width" /></p>
+            </div>
+        </Content>
+        <Actions>
+            <MdcDialogActions>
+                <MdcDialogButton OnClick="@(async () => await tablePersonDialog.HideAsync())" Type="@MdcButtonType.button" Label="Cancel" />
+            </MdcDialogActions>
+        </Actions>
+    </MdcDialogSurface>
+</MdcDialog>
+
+
+@code {
+    private MdcDialog tablePersonDialog;
+    private TableExampleItem dialogObject = new TableExampleItem();
+
+    private async Task PopulateDialog(TableExampleItem clickedRow)
+    {
+        await Task.Run(() =>
+        {
+            dialogObject = new TableExampleItem
+            {
+                Id = clickedRow.Id,
+                PersonName = clickedRow.PersonName,
+                Fee = clickedRow.Fee,
+                DatePaid = clickedRow.DatePaid
+            };
+        });
+
+        await tablePersonDialog.ShowAsync();
+    }
+
+    public class TableExampleItem
+    {
+        public int Id { get; set; }
+        public string PersonName { get; set; }
+        public decimal Fee { get; set; }
+        public DateTime DatePaid { get; set; }
+    }
+
+    private List<TableExampleItem> tableItems = new List<TableExampleItem>
+{
+        new TableExampleItem { Id = 1304267, PersonName = "Casey Mata", Fee = 74, DatePaid = DateTime.Parse("8/20/2018")},
+        new TableExampleItem { Id = 1683798, PersonName = "Madeline Chase", Fee = 36, DatePaid = DateTime.Parse("9/28/2018")},
+        new TableExampleItem { Id = 1353033, PersonName = "Braylon Wade", Fee = 72, DatePaid = DateTime.Parse("10/2/2018")},
+        new TableExampleItem { Id = 1683588, PersonName = "Madilynn Franklin", Fee = 100, DatePaid = DateTime.Parse("10/26/2018")},
+        new TableExampleItem { Id = 1323050, PersonName = "Nelson Mckenzie", Fee = 93, DatePaid = DateTime.Parse("11/6/2018")},
+        new TableExampleItem { Id = 1587111, PersonName = "Zayden Myers", Fee = 97, DatePaid = DateTime.Parse("1/2/2019")},
+        new TableExampleItem { Id = 1678696, PersonName = "Douglas Lang", Fee = 7, DatePaid = DateTime.Parse("1/14/2019")},
+        new TableExampleItem { Id = 1666589, PersonName = "Skylar Wiley", Fee = 90, DatePaid = DateTime.Parse("4/25/2019")},
+        new TableExampleItem { Id = 1361205, PersonName = "Valentin Kent", Fee = 84, DatePaid = DateTime.Parse("5/6/2019")},
+        new TableExampleItem { Id = 1303849, PersonName = "Adelaide Dunlap", Fee = 77, DatePaid = DateTime.Parse("6/18/2019")},
+        new TableExampleItem { Id = 1782566, PersonName = "Karlee Mcknight", Fee = 56, DatePaid = DateTime.Parse("7/9/2019")},
+        new TableExampleItem { Id = 1482496, PersonName = "Cameron Clay", Fee = 91, DatePaid = DateTime.Parse("10/17/2019")},
+        new TableExampleItem { Id = 1372383, PersonName = "Hayley Howard", Fee = 74, DatePaid = DateTime.Parse("11/28/2019")},
+        new TableExampleItem { Id = 1639280, PersonName = "Aden Barrett", Fee = 10, DatePaid = DateTime.Parse("12/9/2019")},
+        new TableExampleItem { Id = 1542084, PersonName = "Aylin Stark", Fee = 8, DatePaid = DateTime.Parse("1/13/2020")},
+        new TableExampleItem { Id = 1301320, PersonName = "Brooklyn Hutchinson", Fee = 15, DatePaid = DateTime.Parse("1/20/2020")},
+        new TableExampleItem { Id = 1402954, PersonName = "Asia Newman", Fee = 33, DatePaid = DateTime.Parse("1/21/2020")},
+        new TableExampleItem { Id = 1396952, PersonName = "Vanessa Gibson", Fee = 23, DatePaid = DateTime.Parse("4/2/2020")},
+        new TableExampleItem { Id = 1426345, PersonName = "Zaria Mcfarland", Fee = 27, DatePaid = DateTime.Parse("4/9/2020")},
+        new TableExampleItem { Id = 1781241, PersonName = "Clare Walsh", Fee = 48, DatePaid = DateTime.Parse("7/27/2020")},
+        new TableExampleItem { Id = 1390545, PersonName = "Alexus Dickson", Fee = 30, DatePaid = DateTime.Parse("8/5/2020")},
+        new TableExampleItem { Id = 1554637, PersonName = "Emiliano Chavez", Fee = 66, DatePaid = DateTime.Parse("11/11/2020")},
+        new TableExampleItem { Id = 1383699, PersonName = "Justine Fernandez", Fee = 25, DatePaid = DateTime.Parse("12/11/2020")},
+        new TableExampleItem { Id = 1226882, PersonName = "Sierra Richard", Fee = 22, DatePaid = DateTime.Parse("12/17/2020")}
+    };
+}

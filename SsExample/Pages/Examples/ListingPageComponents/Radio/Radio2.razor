@@ -1,0 +1,30 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Boolean Radio Options</div>
+        <MdcRadio @bind-Value="@radio1Value">
+            <MdcRadioOption Label="Yes" Value="@((bool?)true)" />
+            <MdcRadioOption Label="No" Value="@((bool?)false)" />
+        </MdcRadio>
+
+        <div>The selected radio option is <em>@(radio1Value == null ? "null" : radio1Value)</em></div>
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcRadio @bind-Value=""@radio1Value"">
+    <MdcRadioOption Label=""Yes"" Value=""@((bool?)true)"" />
+    <MdcRadioOption Label=""No"" Value=""@((bool?)false)"" />
+</MdcRadio>
+
+<div>The selected radio option is <em>@(radio1Value == null ? ""null"" : radio1Value)</em></div>
+
+@code {
+    private bool? radio1Value;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private bool? radio1Value;
+}

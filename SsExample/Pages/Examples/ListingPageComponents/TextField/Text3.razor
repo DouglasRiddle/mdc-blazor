@@ -1,0 +1,20 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Text Field with Leading Icon</div>
+        <MdcTextField @bind-Value="@textField3" Label="Not Really a Search" LeadingIcon="search" />
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcTextField @bind-Value=""@textField3"" Label=""Not Really a Search"" LeadingIcon=""search"" />
+
+@code {
+    private string textField3;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private string textField3;
+}

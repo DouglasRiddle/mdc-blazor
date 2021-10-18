@@ -1,0 +1,51 @@
+﻿@namespace SsExample.Pages.Examples
+
+<style>
+    .avatar {
+        background-color: #009ddc;
+        clip-path: circle(20px at center);
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        width: 100%;
+    }
+
+        .avatar img {
+            object-fit: contain;
+            width: 50%;
+        }
+</style>
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">List With Avatar Image</div>
+        <div>
+            <MdcList>
+                <MdcListItem Label="List Item 1"><Avatar><span class="avatar"><img src="./images/avatar_small.png" alt="avatar" /></span></Avatar></MdcListItem>
+                <MdcListItem Label="List Item 2"><Avatar><span class="avatar"><img src="./images/avatar_small.png" alt="avatar" /></span></Avatar></MdcListItem>
+            </MdcList>
+        </div>
+
+        <CodeSection>
+            <pre rel="CSS"><code>@(@".avatar {
+    background-color: #009ddc;
+    clip-path: circle(20px at center);
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+}
+
+    .avatar img {
+        object-fit: contain;
+        width: 50%;
+    }")</code></pre>
+            <pre rel="Blazor"><code>@(@"<div>
+    <MdcList>
+        <MdcListItem Label=""List Item 1""><Avatar><span class=""avatar""><img src=""./images/avatar_small.png"" alt=""avatar"" /></span></Avatar></MdcListItem>
+        <MdcListItem Label=""List Item 2""><Avatar><span class=""avatar""><img src=""./images/avatar_small.png"" alt=""avatar"" /></span></Avatar></MdcListItem>
+    </MdcList>
+</div>")</code></pre>
+        </CodeSection>
+    </section>
+</p>

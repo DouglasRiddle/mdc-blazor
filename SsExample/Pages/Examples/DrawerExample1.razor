@@ -1,0 +1,62 @@
+﻿@layout SimpleLayout
+@inject NavigationManager navMan
+@page "/drawer-example-full-width-top-bar/"
+
+<style>
+    main.content { padding: 0; }
+
+        main.content.header-class {
+            min-width: 0;
+            max-width: none;
+        }
+</style>
+
+<MdcDrawer Dismissible="true" StartOpen="true" @ref="mdcDrawer">
+    <FullWidthTopBar>
+        <MdcTopAppBar Title="Dismissible Drawer Example">
+            <MdcTopAppBarButton Icon="menu" OnClick="@(() => mdcDrawer.Toggle())" />
+            <MdcTopAppBarButton Icon="home" OnClick="@(() => navMan.NavigateTo("./"))" />
+        </MdcTopAppBar>
+    </FullWidthTopBar>
+    <DrawerContent>
+        <MdcList>
+            <MdcListItem Disabled="true" Label="Disabled List Item" />
+            <MdcListItem Href="./" Label="Back to Home" />
+            <MdcListItem Label="List Item to Nowhere" />
+        </MdcList>
+    </DrawerContent>
+    <AppContent>
+        <div class="flow" style="padding: 2rem;">
+            <p>Some page content.</p>
+
+            <pre rel="Blazor"><code>@(@"<MdcDrawer Dismissible=""true"" StartOpen=""true"" @ref=""mdcDrawer"">
+    <FullWidthTopBar>
+        <MdcTopAppBar Title=""Dismissible Drawer Example"">
+            <MdcTopAppBarButton Icon=""menu"" OnClick=""@(() => mdcDrawer.Toggle())"" />
+            <MdcTopAppBarButton Icon=""home"" OnClick=""@(() => navMan.NavigateTo(""./""))"" />
+        </MdcTopAppBar>
+    </FullWidthTopBar>
+    <DrawerContent>
+        <MdcList>
+            <MdcListItem Disabled=""true"" Label=""Disabled List Item"" />
+            <MdcListItem Href=""./"" Label=""Back to Home"" />
+            <MdcListItem Label=""List Item to Nowhere"" />
+        </MdcList>
+    </DrawerContent>
+    <AppContent>
+        <div class=""flow"" style=""padding: 2rem;"">
+            <p>Some page content.</p>
+        </div>
+    </AppContent>
+</MdcDrawer>
+
+@code {
+    private MdcDrawer mdcDrawer;
+}")</code></pre>
+        </div>
+    </AppContent>
+</MdcDrawer>
+
+@code {
+    private MdcDrawer mdcDrawer;
+}

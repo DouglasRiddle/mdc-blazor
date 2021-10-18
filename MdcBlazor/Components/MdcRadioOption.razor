@@ -1,0 +1,99 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+@using MdcBlazor.Code
+@typeparam T
+
+<div class="mdc-form-field @Class" style="@Style" @ref="radioFormElement">
+    <div class="mdc-radio mdc-radio--touch @radioDisabledClass" @ref="radioElement">
+        <input disabled="@Disabled"
+               class="mdc-radio__native-control"
+               id="@radioOptionId"
+               name="@Group.RadioGroupId"
+               type="radio"
+               value="@Value"
+               @onchange="@(async () => await ChangeValueAsync())"
+               @attributes="@UnmatchedParameters" />
+        <div class="mdc-radio__background">
+            <div class="mdc-radio__outer-circle"></div>
+            <div class="mdc-radio__inner-circle"></div>
+        </div>
+        <div class="mdc-radio__ripple"></div>
+    </div>
+    <label for="@radioOptionId">@Label</label>
+</div>
+
+
+@code {
+    private string radioDisabledClass => Disabled ? "mdc-radio--disabled" : "";
+    private ElementReference radioElement;
+    private ElementReference radioFormElement;
+    private string radioOptionId = Common.GenerateId();
+
+    private async Task ChangeValueAsync() { await Group.ChangeValueAsync(Value); }
+
+    [CascadingParameter] private MdcRadio<T> Group { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object> UnmatchedParameters { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value sets this component as disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Optional. Used only when within an MdcDialog. A <c>true</c> value indicates this element should be focused on dialog open
+    /// </summary>
+    [Parameter] public bool IsInitialDialogFocus { get; set; } = false;
+
+    /// <summary>
+    /// Required. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Required. The value tied to this component
+    /// </summary>
+    [Parameter] public T Value { get; set; }
+
+    /// <summary>
+    /// Set focus to this element
+    /// </summary>
+    public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", radioFormElement); }
+
+    protected override void OnInitialized()
+    {
+        if (IsInitialDialogFocus)
+        {
+            if (UnmatchedParameters == null)
+            {
+                UnmatchedParameters = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
+            }
+            else if (!UnmatchedParameters.ContainsKey("data-mdc-dialog-initial-focus"))
+            {
+                UnmatchedParameters.Append(new("data-mdc-dialog-initial-focus", ""));
+            }
+        }
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.radio.init", radioElement, radioFormElement, Group.Value, Value);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

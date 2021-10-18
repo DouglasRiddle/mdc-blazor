@@ -1,0 +1,58 @@
+﻿@namespace MdcBlazor
+<div class="mdc-dialog__container">
+    <div class="mdc-dialog__surface"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="@Dialog.dialogTitleId"
+         aria-describedby="@Dialog.dialogContentId">
+        @if (!string.IsNullOrWhiteSpace(Dialog.Title) || Dialog.IsFullScreen)
+        {
+            @if (Dialog.IsFullScreen)
+            {
+                <div class="mdc-dialog__header">
+                    @if (!string.IsNullOrWhiteSpace(Dialog.Title))
+                    {
+                        <h2 class="mdc-dialog__title" id="my-dialog-title">
+                            @(Dialog.Title.Trim())
+                        </h2>
+                    }
+                    <button class="mdc-icon-button material-icons mdc-dialog__close"
+                            data-mdc-dialog-action="close">
+                        close
+                    </button>
+                </div>
+            }
+            else
+            {
+                <h2 class="mdc-dialog__title" id="@Dialog.dialogTitleId">@(Dialog.Title.Trim())</h2>
+            }
+        }
+        <div class="mdc-dialog__content @Class" id="@Dialog.dialogContentId" style="@Style">@Content</div>
+        @Actions
+    </div>
+</div>
+<div class="mdc-dialog__scrim"></div>
+
+@code {
+    [CascadingParameter] private MdcDialog Dialog { get; set; }
+
+    /// <summary>
+    /// Required. Specifies the section containing <see cref="MdcDialogActions" />
+    /// </summary>
+    [Parameter] public RenderFragment Actions { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Required. Specifies the section containing <see cref="MdcDialogSurface" />
+    /// </summary>
+    [Parameter] public RenderFragment Content { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+}

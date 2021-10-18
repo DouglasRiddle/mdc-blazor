@@ -1,0 +1,91 @@
+﻿@namespace SsExample.Pages.Examples
+
+@implements IDisposable
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Tracked Dialog</div>
+        <MdcButton OnClick="@(async () => { dialogResponse = await dialogObject.ShowAsyncWithAction(); })" Label="Tracked Dialog" ButtonStyle=MdcButtonStyle.raised />
+
+        @if (dialogResponse != null)
+        {
+            <div>
+                Tracked Response: <strong>@dialogResponse</strong><br />
+                <MdcButton OnClick="@(() => dialogResponse = null)" Label="Clear Response" />
+            </div>
+        }
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcButton OnClick=""@(async () => { dialogResponse = await dialogObject.ShowAsyncWithAction(); })"" Label=""Tracked Dialog"" ButtonStyle=MdcButtonStyle.raised />
+
+@if (dialogResponse != null)
+{
+    <div>
+        Tracked Response: <strong>@dialogResponse</strong><br />
+        <MdcButton OnClick=""@(() => dialogResponse = null)"" Label=""Clear Response"" />
+    </div>
+}
+
+<MdcDialog @ref=""dialogObject"" Title=""Tracked Dialog"" TimeOut=""@(TimeSpan.FromSeconds(100))"">
+    <MdcDialogSurface>
+        <Content>
+            This dialog will track the selected option with a default timeout of 100 seconds. After 100 seconds with no response the dialog will automatically close.
+        </Content>
+        <Actions>
+            <MdcDialogActions>
+                <MdcDialogButton ButtonStyle=MdcButtonStyle.raised Type=""@MdcButtonType.button"" Label=""Chiefs"" DialogAction=""Chiefs"" />
+                <MdcDialogButton ButtonStyle=MdcButtonStyle.raised Type=""@MdcButtonType.button"" Label=""Cowboys"" DialogAction=""Cowboys"" />
+                <MdcDialogButton ButtonStyle=MdcButtonStyle.raised Type=""@MdcButtonType.button"" Label=""Saints"" DialogAction=""Saints"" />
+            </MdcDialogActions>
+        </Actions>
+    </MdcDialogSurface>
+</MdcDialog>
+
+@code {
+    private string dialogResponse;
+    private MdcDialog dialogObject;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+<MdcDialog @ref="dialogObject" Title="Tracked Dialog" TimeOut="@(TimeSpan.FromSeconds(100))">
+    <MdcDialogSurface>
+        <Content>
+            This dialog will track the selected option with a default timeout of 100 seconds. After 100 seconds with no response the dialog will automatically close.
+        </Content>
+        <Actions>
+            <MdcDialogActions>
+                <MdcDialogButton ButtonStyle=MdcButtonStyle.raised Type="@MdcButtonType.button" Label="Chiefs" DialogAction="Chiefs" />
+                <MdcDialogButton ButtonStyle=MdcButtonStyle.raised Type="@MdcButtonType.button" Label="Cowboys" DialogAction="Cowboys" />
+                <MdcDialogButton ButtonStyle=MdcButtonStyle.raised Type="@MdcButtonType.button" Label="Saints" DialogAction="Saints" />
+            </MdcDialogActions>
+        </Actions>
+    </MdcDialogSurface>
+</MdcDialog>
+
+@code {
+    private string dialogResponse;
+    private MdcDialog dialogObject;
+    private bool disposed = false;
+
+    /* Disposal */
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposed)
+        {
+            if (disposing)
+            {
+                dialogObject?.Dispose();
+            }
+
+            // Indicate that the instance has been disposed.
+            disposed = true;
+        }
+    }
+}

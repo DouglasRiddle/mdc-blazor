@@ -1,0 +1,167 @@
+﻿@inject IJSRuntime jsRuntime
+@implements IDisposable
+@namespace MdcBlazor
+@using MdcBlazor.Code
+@using System.Threading
+
+<div id="@Id" class="mdc-dialog @Class @fullScreenClass" style="@Style" @ref="dialogElement">
+    <CascadingValue Value="@this" IsFixed="@true">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    private CancellationTokenSource cancellationToken;
+    private ElementReference dialogElement;
+    private bool disposed = false;
+    private bool disposeStarted = false;
+    public string dialogTitleId = Common.GenerateId();
+    public string dialogContentId = Common.GenerateId();
+    private string fullScreenClass;
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Set the dialog action when "Escape" is pressed within a dialog.
+    /// </summary>
+    /// <remarks>
+    /// Set <c>EscapeKeyAction=""</c> for no action. Default action is <c>close</c>
+    /// </remarks>
+    [Parameter] public string EscapeKeyAction { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. If <c>true</c> sets the dialog to be full screen on mobile
+    /// </summary>
+    [Parameter] public bool IsFullScreen { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Set the dialog action when the scrim is clicked outside of a dialog.
+    /// </summary>
+    /// <remarks>
+    /// Set <c>ScrimClickAction=""</c> for no action. Default action is <c>close</c>
+    /// </remarks>
+    [Parameter] public string ScrimClickAction { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the <see cref="TimeSpan" /> to wait for a dialog action
+    /// </summary>
+    /// <remarks>
+    /// Default value is 100 seconds. If a dialog action is not selected within the <see cref="TimeSpan" /> the dialog will close returning an empty string
+    /// </remarks>
+    [Parameter] public TimeSpan TimeOut { get; set; } = TimeSpan.FromSeconds(100);
+
+    /// <summary>
+    /// Required. Sets the component title attribute
+    /// </summary>
+    [Parameter] public string Title { get; set; }
+
+    /// <summary>
+    /// Open the dialog and return the selected action. Default timeout is 100 seconds, override with TimeOut parameter
+    /// </summary>
+    /// <returns>
+    /// Returns a string DialogAction value. If no selection is made within the timeout period an empty string is returned.
+    /// </returns>
+    public async Task<string> ShowAsyncWithAction()
+    {
+        try
+        {
+            cancellationToken = new CancellationTokenSource();
+            cancellationToken.CancelAfter(TimeOut);
+            return await jsRuntime.InvokeAsync<string>("MdcBlazor.dialogWithCallback.show", cancellationToken.Token, dialogElement, EscapeKeyAction, ScrimClickAction);
+        }
+        catch (TaskCanceledException)
+        {
+            // Only hide if canceled due to timeout
+            if (!disposeStarted) { await HideAsyncWithAction("Dialog timeout waiting for user action"); }
+            return String.Empty;
+        }
+    }
+
+    /// <summary>
+    /// Close dialog.
+    /// </summary>
+    /// <param name="closeDialogAction">Optional string specifying dialog close action</param>
+    public async Task HideAsyncWithAction(string closeDialogAction = "")
+    {
+        try
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.dialogWithCallback.hide", dialogElement, closeDialogAction);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+    }
+
+    /// <summary>
+    /// Show dialog. Does not track or return dialog action.
+    /// </summary>
+    public async Task ShowAsync()
+    {
+        try
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.dialog.show", dialogElement, EscapeKeyAction, ScrimClickAction);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+    }
+
+    /// <summary>
+    /// Close dialog.
+    /// </summary>
+    public async Task HideAsync()
+    {
+        try
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.dialog.hide", dialogElement);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        fullScreenClass = IsFullScreen ? "mdc-dialog--fullscreen" : "";
+
+        base.OnInitialized();
+    }
+
+    /* Disposal */
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposed)
+        {
+            disposeStarted = true;
+
+            if (disposing) { cancellationToken?.Cancel(); }
+
+            // Indicate that the instance has been disposed.
+            disposed = true;
+            disposeStarted = false;
+        }
+    }
+}

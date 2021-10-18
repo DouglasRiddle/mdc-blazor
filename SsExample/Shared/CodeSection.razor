@@ -1,0 +1,12 @@
+﻿@if (!showCode)
+{<div class="code-button"><MdcButton Label="Show Code" OnClick="(() => showCode = !showCode)" ButtonStyle="MdcButtonStyle.unelevated" Type="@MdcButtonType.button" /></div>}
+else
+{
+    <div class="code-button"><MdcButton Label="Hide Code" OnClick="(() => showCode = !showCode)" ButtonStyle="MdcButtonStyle.unelevated" Type="@MdcButtonType.button" /></div>
+    @ChildContent
+}
+
+@code {
+    private bool showCode;
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

@@ -1,0 +1,27 @@
+﻿@if (!showParam)
+{
+    <p>
+        <section class="component parameters flow" style="padding-bottom: 0;">
+            <div class="@MdcTypography.Caption component-header parameters-header" @onclick="@(() => showParam = !showParam)">
+                <span class="material-icons" aria-hidden="true">add_circle</span>&emsp;Parameters
+            </div>
+        </section>
+    </p>
+}
+else
+{
+    <p>
+        <section class="component parameters flow">
+            <div class="@MdcTypography.Caption component-header parameters-header" @onclick="@(() => showParam = !showParam)">
+                <span class="material-icons" aria-hidden="true">remove_circle</span>&emsp;Parameters
+            </div>
+
+            @ChildContent
+        </section>
+    </p>
+}
+
+@code {
+    private bool showParam;
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

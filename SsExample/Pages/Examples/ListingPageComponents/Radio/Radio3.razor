@@ -1,0 +1,34 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Integer Radio Options</div>
+        <p>
+            <MdcRadio @bind-Value="@radio1Value">
+                <MdcRadioOption Label="One thousand" Value="1000" /><br />
+                <MdcRadioOption Label="So much more" Value="1000000" />
+            </MdcRadio>
+        </p>
+
+        <div>The selected radio option is <em>@(radio1Value.ToString("N0"))</em></div>
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<p>
+    <MdcRadio @bind-Value=""@radio1Value"">
+        <MdcRadioOption Label=""One thousand"" Value=""1000"" /><br />
+        <MdcRadioOption Label=""So much more"" Value=""1000000"" />
+    </MdcRadio>
+</p>
+
+<div>The selected radio option is <em>@(radio1Value.ToString(""N0""))</em></div>
+
+@code {
+    private int radio1Value;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private int radio1Value;
+}

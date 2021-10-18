@@ -1,0 +1,21 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Normal Checkbox</div>
+        <MdcCheckbox Label="Checkbox" @bind-Value="checkboxValue" />
+        <div>Checkbox Value = @checkboxValue</div>
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcCheckbox Label=""Checkbox"" @bind-Value=""checkboxValue"" />
+<div>Checkbox Value = @checkboxValue</div>
+
+@code {
+    private bool checkboxValue;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private bool checkboxValue;
+}

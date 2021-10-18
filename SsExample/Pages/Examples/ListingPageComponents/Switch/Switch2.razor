@@ -1,0 +1,25 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Colored Switch</div>
+        <MdcSwitch Class="colored-switch" Label="Switch Option" @bind-Value="switchValue" />
+        <div>Option Value = @switchValue</div>
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcSwitch Class=""colored-switch"" Label=""Switch Option"" @bind-Value=""switchValue"" />
+<div>Option Value = @switchValue</div>
+
+@code {
+    private bool switchValue;
+}")</code></pre>
+            <pre rel="CSS"><code>@(@"::deep .colored-switch {
+    --unselected-switch-color-rgb: 172, 0,32;
+    --selected-switch-color-rgb: 32, 176, 0;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private bool switchValue;
+}

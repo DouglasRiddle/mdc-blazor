@@ -1,0 +1,20 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Text field with prefix and suffix</div>
+        <MdcTextField @bind-Value="textField" PrefixText="$" SuffixText=".00" Label="Please enter an amount" Type="@MdcTextFieldType.number" />
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcTextField @bind-Value=""textField"" PrefixText=""$"" SuffixText="".00"" Label=""Please enter an amount"" Type=""@MdcTextFieldType.number"" />
+
+@code {
+    private string textField;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private string textField;
+}

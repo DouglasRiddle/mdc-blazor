@@ -1,0 +1,180 @@
+﻿/* Pull in Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/* BEGIN USER CSS */
+/* CSS Variables */
+:root {
+    --flow-space: 1em;
+}
+
+html {
+    background-color: #f5f5f6;
+    font-family: Roboto, serif;
+    font-size: 16px;
+}
+
+body {
+    color: #000;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 162%;
+    margin: 0;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #003767;
+}
+
+/* https://24ways.org/2018/managing-flow-and-rhythm-with-css-custom-properties/ */
+.flow > * + * {
+    margin-top: var(--flow-space);
+}
+
+.component.flow > .mdc-touch-target-wrapper {
+    display: inline-block;
+}
+
+.hidden {
+    display: none;
+}
+
+.full-width {
+    width: 100%;
+}
+
+
+/* Listing page CSS */
+section.component {
+    background-color: #fff;
+    border: 1px solid hsl(0, 0%, 75%);
+    border-radius: 4px;
+    display: inline-block;
+    max-width: 100%;
+    padding: 1rem;
+}
+
+.parameters {
+    font-size: .90rem;
+}
+
+.component-header {
+    background-color: rgb(0, 157, 220);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #fff;
+    font-weight: bold;
+    line-height: 1rem;
+    padding: 0 1rem;
+    margin: -1rem;
+    margin-bottom: 0;
+}
+
+.parameters-header {
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+}
+.parameters-header .material-icons {
+    font-size: inherit;
+}
+
+section.component pre {
+    font-size: .8rem;
+    font-weight: 400;
+    hyphens: none;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    margin-bottom: 0;
+    padding: 0;
+    position: relative;
+    tab-size: 2;
+    word-break: normal;
+}
+
+pre code {
+    background: hsl(0, 0%, 95%);
+    border: 1px solid hsl(0, 0%, 75%);
+    border-radius: 4px;
+    display: block;
+    padding: 1rem;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+pre[rel]:before {
+    color: hsl(0, 0%, 50%);
+    content: attr(rel);
+    font-weight: 700;
+    font-size: .6rem;
+    padding: 0 .5rem;
+    position: absolute;
+    width: 100%;
+}
+
+*[id] { scroll-margin-top: 56px; }
+
+/* Override for disabled text boxes */
+.darken-disabled.mdc-text-field--disabled .mdc-text-field__input {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.darken-disabled.mdc-text-field--disabled .mdc-floating-label {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+/* Override for disabled select */
+.darken-disabled.mdc-select--disabled .mdc-select__selected-text {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.darken-disabled.mdc-select--disabled .mdc-floating-label {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+/* Search */
+.search-status {
+    padding: .5rem 1rem;
+}
+
+    .search-status img {
+        display: inline-block;
+    }
+
+/* Auto Refresh */
+.data-refresh-container {
+    font-size: .75rem;
+    color: hsl(0, 0%, 50%);
+    text-align: right;
+}
+
+/* ------------------- XSMALL SCREEN ------------------- */
+@media screen and (max-width: 599px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+/* ------------------- SMALL SCREEN ------------------- */
+@media screen and (min-width: 600px) {
+    *[id] {
+        scroll-margin-top: 64px;
+    }
+}
+
+/* ------------------- MEDIUM SCREEN ------------------- */
+@media screen and (min-width: 960px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+/* ------------------- LARGE SCREEN ------------------- */
+@media screen and (min-width: 1280px) {
+}
+
+/* ------------------- XLARGE SCREEN ------------------- */
+@media screen and (min-width: 1920px) {
+}

@@ -1,0 +1,113 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<div id="@Id" class="mdc-touch-target-wrapper">
+    <button class="mdc-button mdc-button--touch @buttonStyleClass @Class"
+            @attributes="additionalAttributes"
+            disabled="@Disabled"
+            style="@Style"
+            type="@Type"
+            @onclick="OnClick"
+            @ref="buttonElement">
+        <div class="mdc-button__ripple"></div>
+        @if (!string.IsNullOrWhiteSpace(LeadingIcon))
+        {<i aria-hidden="true" class="material-icons mdc-button__icon">@LeadingIcon</i>}
+        <span class="mdc-button__label">@Label</span>
+        @if (!string.IsNullOrWhiteSpace(TrailingIcon))
+        {<i aria-hidden="true" class="material-icons mdc-button__icon">@TrailingIcon</i>}
+        <div class="mdc-button__touch"></div>
+    </button>
+</div>
+
+@code {
+    private Dictionary<string, object> additionalAttributes;
+    private ElementReference buttonElement;
+    private string buttonStyleClass;
+
+    /// <summary>
+    /// Optional. Sets the button style via <see cref="MdcButtonStyle" /> enum. Defaults to "flat".
+    /// </summary>
+    [Parameter] public MdcButtonStyle ButtonStyle { get; set; } = MdcButtonStyle.flat;
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value sets this component as disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. Used only when within an MdcDialog. A <c>true</c> value indicates this element should be focused on dialog open
+    /// </summary>
+    [Parameter] public bool IsInitialDialogFocus { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Set a <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> leading icon
+    /// </summary>
+    [Parameter] public string LeadingIcon { get; set; }
+
+    /// <summary>
+    /// Required. Set the component label text
+    /// </summary>
+    [Parameter] public string Label { get; set; }
+
+    /// <summary>
+    /// Optional. Pass code to run when this component is clicked.
+    /// </summary>
+    /// <remarks>In Blazor this is typically a lambda or method name.</remarks>
+    /// <example>
+    /// <code>
+    /// OnClick="@(() => someBool = true)"
+    /// // or
+    /// OnClick="@SomeMethod"
+    /// </code>
+    /// </example>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Optional. Set a <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> trailing icon
+    /// </summary>
+    [Parameter] public string TrailingIcon { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the button type
+    /// </summary>
+    [Parameter] public MdcButtonType Type { get; set; } = MdcButtonType.button;
+
+    /// <summary>
+    /// Set focus to this element
+    /// </summary>
+    public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", buttonElement); }
+
+    protected override void OnInitialized()
+    {
+        buttonStyleClass = ButtonStyle == MdcButtonStyle.flat ? "" : $"mdc-button--{ButtonStyle}";
+
+        additionalAttributes = IsInitialDialogFocus ? new Dictionary<string, object> { { "data-mdc-dialog-initial-focus", "" } } : null;
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.attachRipple.init", buttonElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

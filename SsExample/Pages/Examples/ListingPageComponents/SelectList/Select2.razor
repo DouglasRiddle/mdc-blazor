@@ -1,0 +1,24 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Disabled Select List</div>
+        <MdcSelect @bind-Value="@select2Value" Disabled="true" Label="Disabled Select" Style="width: 200px;">
+            <MdcSelectOption Label="Please select an option" Value="@("Please Select")" />
+        </MdcSelect>
+
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcSelect @bind-Value=""@select2Value"" Disabled=""true"" Label=""Disabled Select"" Style=""width: 200px;"">
+    <MdcSelectOption Label=""Please select an option"" Value=""@(""Please Select"")"" />
+</MdcSelect>
+
+@code {
+    private string select2Value;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+@code {
+    private string select2Value;
+}

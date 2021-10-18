@@ -1,0 +1,90 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<ul id="@Id" class="@($"mdc-deprecated-list {Class} {avatarClass} {multiLineClass}")" style="@Style" @ref="listElement" @attributes="@AdditionalAttributes">
+    <CascadingValue Value="@this" IsFixed="@true">
+        @ChildContent
+    </CascadingValue>
+</ul>
+
+@code {
+    private string avatarClass;
+    private bool containsAvatar;
+    private bool containsSecondLine;
+    private string multiLineClass;
+
+    public ElementReference listElement;
+
+    public void ContainsAvatar()
+    {
+        // Only set once
+        if (!containsAvatar)
+        {
+            containsAvatar = true;
+            avatarClass = "mdc-deprecated-list--avatar-list";
+            StateHasChanged();
+        }
+
+        return;
+    }
+
+    public void ContainsSecondLine()
+    {
+        // Only set once
+        if (!containsSecondLine)
+        {
+            containsSecondLine = true;
+            multiLineClass = "mdc-deprecated-list--two-line";
+            StateHasChanged();
+        }
+
+        return;
+    }
+
+    /// <summary>
+    /// Gets or sets a collection of additional attributes that will be applied to the created element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object> AdditionalAttributes { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. A <c>true</c> value will allow a single list item to be selected at one time
+    /// </summary>
+    [Parameter] public bool IsSingleSelection { get; set; } = false;
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    [Obsolete("Will be removed in a future version. Please use GetSelectedIndexAsync.")]
+    public async Task<int> GetSelectedIndex() { return await GetSelectedIndexAsync(); }
+
+    public async Task<int> GetSelectedIndexAsync() => await jsRuntime.InvokeAsync<int>("MdcBlazor.list.getSelectedIndex", listElement);
+
+    [Obsolete("Will be removed in a future version. Please use SetSelectedIndexAsync.")]
+    public async Task SetSelectedIndex(int newIndex) { await SetSelectedIndexAsync(newIndex); }
+
+    public async Task SetSelectedIndexAsync(int newIndex) => await jsRuntime.InvokeVoidAsync("MdcBlazor.list.setSelectedIndex", listElement, newIndex);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.list.init", listElement, IsSingleSelection);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

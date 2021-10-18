@@ -1,0 +1,47 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Simple Dialog</div>
+        <MdcButton OnClick="@(async () => await dialogObject.ShowAsync())" Label="Simple Dialog" ButtonStyle=MdcButtonStyle.raised />
+        <CodeSection>
+            <pre rel="Blazor"><code>@(@"<MdcButton OnClick=""@(async () => await dialogObject.ShowAsync())"" Label=""Simple Dialog"" ButtonStyle=MdcButtonStyle.raised />
+
+<MdcDialog @ref=""dialogObject"" Title=""Simple Dialog"">
+    <MdcDialogSurface>
+        <Content>
+            This dialog simply opens or closes. It does not track responses and does not timeout.
+        </Content>
+        <Actions>
+            <MdcDialogActions>
+                <MdcDialogButton OnClick=""@(async () => await dialogObject.HideAsync())"" Type=""@MdcButtonType.button"" Label=""Cancel"" />
+                <MdcDialogButton OnClick=""@(async () => await dialogObject.HideAsync())"" ButtonStyle=MdcButtonStyle.raised Type=""@MdcButtonType.button"" Label=""OK"" />
+            </MdcDialogActions>
+        </Actions>
+    </MdcDialogSurface>
+</MdcDialog>
+
+@code {
+    private MdcDialog dialogObject;
+}")</code></pre>
+        </CodeSection>
+    </section>
+</p>
+
+<MdcDialog @ref="dialogObject" Title="Simple Dialog">
+    <MdcDialogSurface>
+        <Content>
+            This dialog simply opens or closes. It does not track responses and does not timeout.
+        </Content>
+        <Actions>
+            <MdcDialogActions>
+                <MdcDialogButton OnClick="@(async () => await dialogObject.HideAsync())" Type="@MdcButtonType.button" Label="Cancel" />
+                <MdcDialogButton OnClick="@(async () => await dialogObject.HideAsync())" ButtonStyle=MdcButtonStyle.raised Type="@MdcButtonType.button" Label="OK" />
+            </MdcDialogActions>
+        </Actions>
+    </MdcDialogSurface>
+</MdcDialog>
+
+@code {
+    private MdcDialog dialogObject;
+} 

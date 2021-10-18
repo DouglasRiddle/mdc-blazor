@@ -1,0 +1,55 @@
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
+
+<header id="@Id" class="mdc-top-app-bar @Class" style="@Style" @ref="topAppBarElement">
+    <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            @ChildContent
+            <span class="mdc-top-app-bar__title">@Title</span>
+        </section>
+    </div>
+</header>
+
+@code  {
+    public ElementReference topAppBarElement;
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom id string to the component
+    /// </summary>
+    [Parameter] public string Id { get; set; }
+
+    /// <summary>
+    /// Optional. Sets the .setScrollTarget in javascript
+    /// </summary>
+    /// <remarks>
+    /// Expects a <see href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors">valid CSS selector</see> string and scrolls to the first element matching that selector.
+    /// </remarks>
+    [Parameter] public string ScrollTarget { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Required. Sets the component title attribute
+    /// </summary>
+    [Parameter] public string Title { get; set; }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.topAppBar.init", topAppBarElement, ScrollTarget);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}
