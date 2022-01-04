@@ -1,18 +1,19 @@
 ﻿@inject IJSRuntime jsRuntime
 @namespace MdcBlazor
 
-<button class="mdc-icon-button material-icons @Class"
-        id="@Id"
-        disabled="@Disabled"
-        style="@Style"
-        type="@Type"
-        @onclick="OnClick"
-        @ref="buttonElement"
-        @attributes="@AdditionalAttributes">
-    <div class="mdc-icon-button__ripple"></div>
-    @Icon
-    <div class="mdc-icon-button__touch"></div>
-</button>
+<div id="@Id" class="mdc-touch-target-wrapper">
+    <button class="mdc-icon-button mdc-icon-button--touch material-icons @Class"
+            disabled="@Disabled"
+            style="@Style"
+            type="@Type"
+            @onclick="OnClick"
+            @ref="buttonElement"
+            @attributes="@AdditionalAttributes">
+        <div class="mdc-icon-button__ripple"></div>
+        @Icon
+        <div class="mdc-icon-button__touch"></div>
+    </button>
+</div>
 
 @code {
     private ElementReference buttonElement;
@@ -35,6 +36,7 @@
     /// <summary>
     /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon
     /// </summary>
+    [EditorRequired]
     [Parameter] public string Icon { get; set; }
 
     /// <summary>

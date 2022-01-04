@@ -10,12 +10,12 @@
             @onclick="OnClick"
             @ref="buttonElement">
         <div class="mdc-button__ripple"></div>
+        <div class="mdc-button__touch"></div>
         @if (!string.IsNullOrWhiteSpace(LeadingIcon))
         {<i aria-hidden="true" class="material-icons mdc-button__icon">@LeadingIcon</i>}
         <span class="mdc-button__label">@Label</span>
         @if (!string.IsNullOrWhiteSpace(TrailingIcon))
         {<i aria-hidden="true" class="material-icons mdc-button__icon">@TrailingIcon</i>}
-        <div class="mdc-button__touch"></div>
     </button>
 </div>
 
@@ -57,6 +57,7 @@
     /// <summary>
     /// Required. Set the component label text
     /// </summary>
+    [EditorRequired]
     [Parameter] public string Label { get; set; }
 
     /// <summary>

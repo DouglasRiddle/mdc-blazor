@@ -52,11 +52,6 @@
     /// </summary>
     [Parameter] public string TopAppBarTitle { get; set; }
 
-    /// <summary>
-    /// Required. Sets the user full name displayed in the top app bar
-    /// </summary>
-    [Parameter] public string UserFullName { get; set; }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
