@@ -3,21 +3,22 @@
 <p>
     <section class="component flow">
         <div class="@MdcTypography.Caption component-header">Icon Toggle Button</div>
-        <MdcIconToggleButton @bind-Value="iconButtonToggleStarred" Icon_On="star" Icon_Off="star_border" Style="@onColor" />
+        <MdcIconToggleButton @bind-Value="iconButtonToggleStarred" Icon_On="star" Icon_Off="star_border" />
         <div>Icon Toggle Button Starred: @iconButtonToggleStarred</div>
         <CodeSection>
-            <pre rel="Blazor"><code>@(@"<MdcIconToggleButton @bind-Value=""iconButtonToggleStarred"" Icon_On=""star"" Icon_Off=""star_border"" Style=""@onColor"" />
+            <pre rel="Blazor"><code>@(@"<MdcIconToggleButton @bind-Value=""iconButtonToggleStarred"" Icon_On=""star"" Icon_Off=""star_border"" />
 <div>Icon Toggle Button Starred: @iconButtonToggleStarred</div>
 
 @code {
-    private string onColor => iconButtonToggleStarred ? ""color: #fdca44;"" : """";
     private bool iconButtonToggleStarred = false;
+}")</code></pre>
+            <pre rel="CSS"><code>@(@"::deep .mdc-icon-button--on {
+    color: #fdca44;
 }")</code></pre>
         </CodeSection>
     </section>
 </p>
 
 @code {
-    private string onColor => iconButtonToggleStarred ? "color: #fdca44;" : "";
     private bool iconButtonToggleStarred = false;
 }

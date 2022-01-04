@@ -1,8 +1,20 @@
-﻿@namespace MdcBlazor
+﻿@inject IJSRuntime jsRuntime
+@namespace MdcBlazor
 
-<button id="@Id" class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon @Class" style="@Style" title="@Title" type="@Type" @onclick="OnClick">@Icon</button>
+<button id="@Id"
+        class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon @Class"
+        style="@Style"
+        title="@Title"
+        type="@Type"
+        @ref="buttonElement"
+        @onclick="OnClick">
+    <div class="mdc-icon-button__ripple"></div>
+    @Icon
+</button>
 
 @code {
+    private ElementReference buttonElement;
+
     /// <summary>
     /// Optional. Adds custom class string to the component
     /// </summary>
@@ -11,6 +23,7 @@
     /// <summary>
     /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon
     /// </summary>
+    [EditorRequired]
     [Parameter] public string Icon { get; set; }
 
     /// <summary>
@@ -39,10 +52,21 @@
     /// <summary>
     /// Required. Sets the component title attribute
     /// </summary>
+    [EditorRequired]
     [Parameter] public string Title { get; set; }
 
     /// <summary>
     /// Optional. Sets the button type
     /// </summary>
     [Parameter] public MdcButtonType Type { get; set; } = MdcButtonType.button;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.attachUnboundRipple.init", buttonElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
 }

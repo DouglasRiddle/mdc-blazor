@@ -1,18 +1,18 @@
 ﻿@inject IJSRuntime jsRuntime
 @namespace MdcBlazor
 
-<button aria-hidden="true"
-        aria-pressed="@Value"
-        id="@Id"
-        class="mdc-icon-button @Class @stateClass"
-        style="@Style"
-        type="@Type"
-        @onclick="@(async (e) => await ChangeValueAsync(e))"
-        @ref="buttonElement">
-    <div class="mdc-icon-button__ripple"></div>
-    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">@Icon_On</i>
-    <i class="material-icons mdc-icon-button__icon">@Icon_Off</i>
-</button>
+<div id="@Id" class="mdc-touch-target-wrapper">
+    <button aria-pressed="@Value"
+            class="mdc-icon-button mdc-icon-button--touch @Class @stateClass"
+            style="@Style"
+            type="@Type"
+            @onclick="@(async (e) => await ChangeValueAsync(e))"
+            @ref="buttonElement">
+        <div class="mdc-icon-button__ripple"></div>
+        <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">@Icon_On</i>
+        <i class="material-icons mdc-icon-button__icon">@Icon_Off</i>
+    </button>
+</div>
 
 
 @code {
@@ -27,11 +27,13 @@
     /// <summary>
     /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon for <c>false</c> value
     /// </summary>
+    [EditorRequired]
     [Parameter] public string Icon_Off { get; set; }
 
     /// <summary>
     /// Optional. Set the <see href="https://material.io/resources/icons/?style=baseline">Material Design Icons</see> icon for <c>true</c> value
     /// </summary>
+    [EditorRequired]
     [Parameter] public string Icon_On { get; set; }
 
     /// <summary>
@@ -65,6 +67,7 @@
     /// <summary>
     /// Required. The value tied to this component
     /// </summary>
+    [EditorRequired]
     [Parameter] public bool Value { get; set; }
 
     /// <summary>
