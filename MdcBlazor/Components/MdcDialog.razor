@@ -84,7 +84,7 @@
             cancellationToken.CancelAfter(TimeOut);
             return await jsRuntime.InvokeAsync<string>("MdcBlazor.dialogWithCallback.show", cancellationToken.Token, dialogElement, EscapeKeyAction, ScrimClickAction);
         }
-        catch (TaskCanceledException)
+        catch (JSDisconnectedException)
         {
             // Only hide if canceled due to timeout
             if (!disposeStarted) { await HideAsyncWithAction("Dialog timeout waiting for user action"); }
@@ -102,7 +102,7 @@
         {
             await jsRuntime.InvokeVoidAsync("MdcBlazor.dialogWithCallback.hide", dialogElement, closeDialogAction);
         }
-        catch (TaskCanceledException)
+        catch (JSDisconnectedException)
         {
             return;
         }
@@ -117,7 +117,7 @@
         {
             await jsRuntime.InvokeVoidAsync("MdcBlazor.dialog.show", dialogElement, EscapeKeyAction, ScrimClickAction);
         }
-        catch (TaskCanceledException)
+        catch (JSDisconnectedException)
         {
             return;
         }
@@ -132,7 +132,7 @@
         {
             await jsRuntime.InvokeVoidAsync("MdcBlazor.dialog.hide", dialogElement);
         }
-        catch (TaskCanceledException)
+        catch (JSDisconnectedException)
         {
             return;
         }
