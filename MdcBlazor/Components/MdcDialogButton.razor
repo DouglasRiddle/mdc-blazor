@@ -102,9 +102,10 @@
     /// </summary>
     public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", buttonElement); }
 
-    protected override void OnInitialized()
+    public override async Task SetParametersAsync(ParameterView parameters)
     {
-        buttonStyleClass = ButtonStyle == MdcButtonStyle.flat ? "" : $"mdc-button--{ButtonStyle}";
+        // Set base parameters first
+        await base.SetParametersAsync(parameters);
 
         if (DefaultAction)
         {
@@ -114,7 +115,7 @@
             }
             else if (!additionalAttributes.ContainsKey("data-mdc-dialog-button-default"))
             {
-                additionalAttributes.Append(new("data-mdc-dialog-button-default", ""));
+                additionalAttributes.Add("data-mdc-dialog-button-default", "");
             }
         }
 
@@ -126,9 +127,14 @@
             }
             else if (!additionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
             {
-                additionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
+                additionalAttributes.Add("data-mdc-dialog-initial-focus", "");
             }
         }
+    }
+
+    protected override void OnInitialized()
+    {
+        buttonStyleClass = ButtonStyle == MdcButtonStyle.flat ? "" : $"mdc-button--{ButtonStyle}";
 
         base.OnInitialized();
     }

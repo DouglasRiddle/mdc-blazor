@@ -109,20 +109,18 @@
         await jsRuntime.InvokeVoidAsync("MdcBlazor.switch.setDisabled", switchElement, Disabled);
     }
 
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        // Set base parameters first
+        await base.SetParametersAsync(parameters);
+
+        // Set conditional attributes
+        if (IsInitialDialogFocus) { AddAttribute("data-mdc-dialog-initial-focus", ""); }
+    }
+
     protected override void OnInitialized()
     {
         fieldIdentifier = FieldIdentifier.Create(ValueExpression);
-        if (IsInitialDialogFocus)
-        {
-            if (AdditionalAttributes == null)
-            {
-                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
-            }
-            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
-            {
-                AdditionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
-            }
-        }
 
         base.OnInitialized();
     }

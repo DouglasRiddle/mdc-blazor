@@ -159,6 +159,15 @@
         await jsRuntime.InvokeVoidAsync("MdcBlazor.select.setDisabled", selectElement, Disabled);
     }
 
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        // Set base parameters first
+        await base.SetParametersAsync(parameters);
+
+        // Set conditional attributes
+        if (IsInitialDialogFocus) { AddAttribute("data-mdc-dialog-initial-focus", ""); }
+    }
+
     protected override void OnInitialized()
     {
         hasLabel = !string.IsNullOrEmpty(Label);
@@ -167,17 +176,6 @@
         styleClass = SelectStyle == MdcSelectStyle.outlined ? "mdc-select--outlined" : "mdc-select--filled";
 
         fieldIdentifier = FieldIdentifier.Create(ValueExpression);
-        if (IsInitialDialogFocus)
-        {
-            if (AdditionalAttributes == null)
-            {
-                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
-            }
-            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
-            {
-                AdditionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
-            }
-        }
 
         base.OnInitialized();
     }

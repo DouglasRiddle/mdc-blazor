@@ -50,21 +50,13 @@
     /// </summary>
     public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", checkboxElement); }
 
-    protected override void OnInitialized()
+    public override async Task SetParametersAsync(ParameterView parameters)
     {
-        if (IsInitialDialogFocus)
-        {
-            if (AdditionalAttributes == null)
-            {
-                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
-            }
-            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
-            {
-                AdditionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
-            }
-        }
+        // Set base parameters first
+        await base.SetParametersAsync(parameters);
 
-        base.OnInitialized();
+        // Set conditional attributes
+        if (IsInitialDialogFocus) { AddAttribute("data-mdc-dialog-initial-focus", ""); }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

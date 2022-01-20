@@ -157,7 +157,17 @@
 
     public async Task RefreshLayoutAsync() => await jsRuntime.InvokeVoidAsync("MdcBlazor.textField.layout", textFieldElement);
 
-    // Set attributes
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        // Set base parameters first
+        await base.SetParametersAsync(parameters);
+
+        // Set conditional attributes
+        if (MaxCharacterCount > 0) { AddAttribute("maxlength", MaxCharacterCount.ToString()); }
+
+        if (IsInitialDialogFocus) { AddAttribute("data-mdc-dialog-initial-focus", ""); }
+    }
+
     protected override void OnInitialized()
     {
         hasLabel = !string.IsNullOrEmpty(Label);
@@ -166,30 +176,6 @@
         styleClass = TextFieldStyle == MdcTextFieldStyle.outlined ? "mdc-text-field--outlined" : "mdc-text-field--filled";
 
         ariaAttributes = !string.IsNullOrWhiteSpace(HelperText) ? new Dictionary<string, object>() { { "aria-controls", helperTextId }, { "aria-describedby", helperTextId } } : null;
-
-        if (MaxCharacterCount > 0)
-        {
-            if (AdditionalAttributes == null)
-            {
-                AdditionalAttributes = new Dictionary<string, object> { { "maxlength", MaxCharacterCount.ToString() } };
-            }
-            else if (!AdditionalAttributes.ContainsKey("maxlength"))
-            {
-                AdditionalAttributes.Append(new("maxlength", MaxCharacterCount.ToString()));
-            }
-        }
-
-        if (IsInitialDialogFocus)
-        {
-            if (AdditionalAttributes == null)
-            {
-                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
-            }
-            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
-            {
-                AdditionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
-            }
-        }
 
         base.OnInitialized();
     }

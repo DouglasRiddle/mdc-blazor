@@ -70,8 +70,11 @@
     /// </summary>
     public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", radioFormElement); }
 
-    protected override void OnInitialized()
+    public override async Task SetParametersAsync(ParameterView parameters)
     {
+        // Set base parameters first
+        await base.SetParametersAsync(parameters);
+
         if (IsInitialDialogFocus)
         {
             if (UnmatchedParameters == null)
@@ -80,11 +83,9 @@
             }
             else if (!UnmatchedParameters.ContainsKey("data-mdc-dialog-initial-focus"))
             {
-                UnmatchedParameters.Append(new("data-mdc-dialog-initial-focus", ""));
+                UnmatchedParameters.Add("data-mdc-dialog-initial-focus", "");
             }
         }
-
-        base.OnInitialized();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

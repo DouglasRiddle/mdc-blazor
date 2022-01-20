@@ -261,6 +261,17 @@
     /// </summary>
     public async Task FocusAsync() { await jsRuntime.InvokeVoidAsync("MdcBlazor.focus", textFieldElement); }
 
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        // Set base parameters first
+        await base.SetParametersAsync(parameters);
+
+        // Set conditional attributes
+        if (MaxCharacterCount > 0) { AddAttribute("maxlength", MaxCharacterCount.ToString()); }
+
+        if (IsInitialDialogFocus) { AddAttribute("data-mdc-dialog-initial-focus", ""); }
+    }
+
     protected override void OnInitialized()
     {
         // Only change the date format if set to the default value
@@ -282,30 +293,6 @@
         ariaAttributes = !string.IsNullOrWhiteSpace(HelperText) ? new Dictionary<string, object>() { { "aria-controls", helperTextId }, { "aria-describedby", helperTextId } } : null;
         leadingIconAttributes = OnLeadingIconClick.HasDelegate ? new Dictionary<string, object>() { { "role", "button" }, { "tabIndex", "0" } } : null;
         trailingIconAttributes = OnTrailingIconClick.HasDelegate ? new Dictionary<string, object>() { { "role", "button" }, { "tabIndex", "0" } } : null;
-
-        if (MaxCharacterCount > 0)
-        {
-            if (AdditionalAttributes == null)
-            {
-                AdditionalAttributes = new Dictionary<string, object> { { "maxlength", MaxCharacterCount.ToString() } };
-            }
-            else if (!AdditionalAttributes.ContainsKey("maxlength"))
-            {
-                AdditionalAttributes.Append(new("maxlength", MaxCharacterCount.ToString()));
-            }
-        }
-
-        if (IsInitialDialogFocus)
-        {
-            if (AdditionalAttributes == null)
-            {
-                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
-            }
-            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
-            {
-                AdditionalAttributes.Append(new("data-mdc-dialog-initial-focus", ""));
-            }
-        }
 
         base.OnInitialized();
     }

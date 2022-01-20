@@ -30,6 +30,26 @@ namespace MdcBlazor
         [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
         /// <summary>
+        /// Adds an html attribute value to AdditionalAttributes
+        /// </summary>
+        /// <param name="key"><see cref="string"/> Key</param>
+        /// <param name="value"><see cref="object"/> Value</param>
+        public void AddAttribute(string key, object value)
+        {
+            if (AdditionalAttributes == null)
+            {
+                AdditionalAttributes = new Dictionary<string, object>() { { key, value } };
+            }
+            else if (!AdditionalAttributes.ContainsKey(key))
+            {
+                var addAttributes = (Dictionary<string, object>)AdditionalAttributes;
+                addAttributes.Add(key, value);
+
+                AdditionalAttributes = addAttributes;
+            }
+        }
+
+        /// <summary>
         /// Gets a value for the component's 'id' attribute.
         /// </summary>
         [Parameter] public string? Id { get; set; }
