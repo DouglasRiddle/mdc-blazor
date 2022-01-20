@@ -109,26 +109,14 @@
 
         if (DefaultAction)
         {
-            if (additionalAttributes == null)
-            {
-                additionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-button-default", "" } };
-            }
-            else if (!additionalAttributes.ContainsKey("data-mdc-dialog-button-default"))
-            {
-                additionalAttributes.Add("data-mdc-dialog-button-default", "");
-            }
+            additionalAttributes = additionalAttributes ?? new();
+            additionalAttributes["data-mdc-dialog-button-default"] = "";
         }
 
         if (IsInitialDialogFocus)
         {
-            if (additionalAttributes == null)
-            {
-                additionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
-            }
-            else if (!additionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
-            {
-                additionalAttributes.Add("data-mdc-dialog-initial-focus", "");
-            }
+            additionalAttributes = additionalAttributes ?? new();
+            additionalAttributes["data-mdc-dialog-initial-focus"] = "";
         }
     }
 

@@ -84,14 +84,8 @@
 
         if (IsInitialDialogFocus)
         {
-            if (AdditionalAttributes == null)
-            {
-                AdditionalAttributes = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
-            }
-            else if (!AdditionalAttributes.ContainsKey("data-mdc-dialog-initial-focus"))
-            {
-                AdditionalAttributes.Add("data-mdc-dialog-initial-focus", "");
-            }
+            AdditionalAttributes = AdditionalAttributes ?? new();
+            AdditionalAttributes["data-mdc-dialog-initial-focus"] = "";
         }
     }
 

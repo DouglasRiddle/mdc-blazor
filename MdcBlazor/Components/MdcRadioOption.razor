@@ -77,14 +77,8 @@
 
         if (IsInitialDialogFocus)
         {
-            if (UnmatchedParameters == null)
-            {
-                UnmatchedParameters = new Dictionary<string, object>() { { "data-mdc-dialog-initial-focus", "" } };
-            }
-            else if (!UnmatchedParameters.ContainsKey("data-mdc-dialog-initial-focus"))
-            {
-                UnmatchedParameters.Add("data-mdc-dialog-initial-focus", "");
-            }
+            UnmatchedParameters = UnmatchedParameters ?? new();
+            UnmatchedParameters["data-mdc-dialog-initial-focus"] = "";
         }
     }
 

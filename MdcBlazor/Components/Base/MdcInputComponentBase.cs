@@ -36,17 +36,10 @@ namespace MdcBlazor
         /// <param name="value"><see cref="object"/> Value</param>
         public void AddAttribute(string key, object value)
         {
-            if (AdditionalAttributes == null)
-            {
-                AdditionalAttributes = new Dictionary<string, object>() { { key, value } };
-            }
-            else if (!AdditionalAttributes.ContainsKey(key))
-            {
-                var addAttributes = (Dictionary<string, object>)AdditionalAttributes;
-                addAttributes.Add(key, value);
+            var addAttributes = (Dictionary<string, object>?)AdditionalAttributes ?? new();
+            addAttributes[key] = value;
 
-                AdditionalAttributes = addAttributes;
-            }
+            AdditionalAttributes = addAttributes;
         }
 
         /// <summary>
