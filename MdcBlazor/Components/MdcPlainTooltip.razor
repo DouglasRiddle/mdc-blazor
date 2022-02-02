@@ -1,0 +1,48 @@
+﻿@namespace MdcBlazor
+@inject IJSRuntime jsRuntime
+
+<div @ref="tooltipElement"
+     id="@UniqueId"
+     class="mdc-tooltip @Class"
+     role="tooltip"
+     aria-hidden="true"
+     style="@Style">
+    <div class="mdc-tooltip__surface mdc-tooltip__surface-animation">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    private ElementReference tooltipElement;
+
+    /// <summary>
+    /// Optional. Adds custom class string to the component
+    /// </summary>
+    [Parameter] public string Class { get; set; }
+
+    /// <summary>
+    /// Optional. Adds custom style string to the component
+    /// </summary>
+    [Parameter] public string Style { get; set; }
+
+    /// <summary>
+    /// Required. The unique string that ties the tooltip to the anchor
+    /// </summary>
+    [EditorRequired]
+    [Parameter] public string UniqueId { get; set; }
+
+    /// <summary>
+    /// Tooltip text
+    /// </summary>
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("MdcBlazor.tooltip.init", tooltipElement);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

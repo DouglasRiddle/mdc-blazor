@@ -1,0 +1,25 @@
+﻿@namespace SsExample.Pages.Examples
+
+<p>
+    <section class="component flow">
+        <div class="@MdcTypography.Caption component-header">Plain Tooltip</div>
+
+        <MdcPlainTooltip UniqueId="example1">
+            This is the content of a plaintext tooltip
+        </MdcPlainTooltip>
+        <a aria-describedby="example1" style="display: inline-block;">Hover for Tooltip</a>
+
+        <CodeSection>
+            <em>Important!</em> Must be tied to an anchor (&lt;a&gt;) element
+            with <code>aria-describedby="&lt;UniqueId Value&gt;"</code>.
+            To get the tooltip to position correctly it needs to be an 
+            immediate descendant of <code>&lt;body&gt;</code> (or as close as possible)
+            and the anchor element should be inline.
+
+            <pre rel="Blazor"><code>@(@"<MdcPlainTooltip UniqueId=""example1"">
+    This is the content of a plaintext tooltip
+</MdcPlainTooltip>
+<a aria-describedby=""example1"" style=""display: inline-block;"">Hover for Tooltip</a>")</code></pre>
+        </CodeSection>
+    </section>
+</p>
