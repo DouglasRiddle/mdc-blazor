@@ -208,6 +208,13 @@ namespace MdcBlazor
 
                 return true;
             }
+            else if (typeof(T) == typeof(float) || typeof(T) == typeof(float?))
+            {
+                result = (T)(object)(float.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out float parsedValue) ? parsedValue : default);
+                validationErrorMessage = "";
+
+                return true;
+            }
             else if (typeof(T) == typeof(decimal) || typeof(T) == typeof(decimal?))
             {
                 result = (T)(object)(decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal parsedValue) ? parsedValue : default);
