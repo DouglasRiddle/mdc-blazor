@@ -215,6 +215,13 @@ namespace MdcBlazor
 
                 return true;
             }
+            else if (typeof(T) == typeof(double) || typeof(T) == typeof(double?))
+            {
+                result = (T)(object)(double.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out double parsedValue) ? parsedValue : default);
+                validationErrorMessage = "";
+
+                return true;
+            }
             else if (typeof(T) == typeof(decimal) || typeof(T) == typeof(decimal?))
             {
                 result = (T)(object)(decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal parsedValue) ? parsedValue : default);
