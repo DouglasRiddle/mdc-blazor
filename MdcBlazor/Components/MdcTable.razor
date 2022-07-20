@@ -1,7 +1,8 @@
 ﻿@namespace MdcBlazor
-@typeparam TItem
+@typeparam MdcTableTItem
 @using MdcBlazor.Code
 @using System.Linq
+@attribute [CascadingTypeParameter(nameof(MdcTableTItem))]
 
 <div id="@Id" class="mdc-data-table @Class" style="@Style" @ref="tableElement">
     <div class="mdc-data-table__table-container">
@@ -35,7 +36,7 @@
             <tbody class="mdc-data-table__content">
                 @if (Items != null && Items.Count > 0)
                 {
-                    foreach (TItem item in PageItems)
+                    foreach (MdcTableTItem item in PageItems)
                     {
                         <CascadingValue Value="Selectable" IsFixed="@true">
                             <CascadingValue Value="@this" IsFixed="@true">
@@ -110,14 +111,14 @@
     [Parameter] public string Id { get; set; }
 
     /// <summary>
-    /// Required. Pass the <see cref="List{TItem}" /> used to generate table rows
+    /// Required. Pass the <see cref="List{MdcTableTItem}" /> used to generate table rows
     /// </summary>
-    [Parameter] public List<TItem> Items { get; set; }
+    [Parameter] public List<MdcTableTItem> Items { get; set; }
 
     /// <summary>
     /// Optional. Updates the table's bound item list
     /// </summary>
-    [Parameter] public EventCallback<List<TItem>> ItemsChanged { get; set; }
+    [Parameter] public EventCallback<List<MdcTableTItem>> ItemsChanged { get; set; }
 
     /// <summary>
     /// Required. Set the component label text
@@ -142,12 +143,12 @@
     /// <summary>
     /// Required. Specifies the section containing <see cref="MdcTableRow" /> content
     /// </summary>
-    [Parameter] public RenderFragment<TItem> TableDefinition { get; set; }
+    [Parameter] public RenderFragment<MdcTableTItem> TableDefinition { get; set; }
 
     [Obsolete("Will be removed in a future version. Please use UpdateListItemsAsync.")]
-    public async Task UpdateListItems(List<TItem> items, bool resetToFirstPage = true) { await UpdateListItemsAsync(items, resetToFirstPage); }
+    public async Task UpdateListItems(List<MdcTableTItem> items, bool resetToFirstPage = true) { await UpdateListItemsAsync(items, resetToFirstPage); }
 
-    public async Task UpdateListItemsAsync(List<TItem> items, bool resetToFirstPage = true)
+    public async Task UpdateListItemsAsync(List<MdcTableTItem> items, bool resetToFirstPage = true)
     {
         if (resetToFirstPage) { currentPage = 1; }
 
@@ -203,7 +204,7 @@
 
     private void ApplySort(string columnSelector)
     {
-        var sortColumn = typeof(TItem).GetProperty(columnSelector);
+        var sortColumn = typeof(MdcTableTItem).GetProperty(columnSelector);
 
         Items.Sort((x, y) =>
         {
@@ -235,7 +236,7 @@
 
     private int FirstDisplayedItemNumber => ((currentPage - 1) * (int)pageSize) + 1;
     private int LastDisplayedItemNumber => (FirstDisplayedItemNumber - 1) + PageItems.Count();
-    private List<TItem> PageItems => Items.Skip((currentPage - 1) * (int)pageSize).Take((int)pageSize).ToList();
+    private List<MdcTableTItem> PageItems => Items.Skip((currentPage - 1) * (int)pageSize).Take((int)pageSize).ToList();
     private int TotalPages => Math.Max(1, (int)Math.Ceiling(Items.Count() / (decimal)pageSize));
 
     /// <summary>

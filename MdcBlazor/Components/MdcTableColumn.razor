@@ -1,10 +1,10 @@
 ﻿@namespace MdcBlazor
-@typeparam T
+@typeparam MdcTableTItem
 
 <td class="mdc-data-table__cell @Class @(IsNumeric ? "mdc-data-table__header-cell--numeric" : "")" title="@Title" style="@Style" @onclick="OnClick">@ChildContent</td>
 
 @code {
-    [CascadingParameter] MdcTable<T> Table { get; set; }
+    [CascadingParameter] MdcTable<MdcTableTItem> Table { get; set; }
 
     /// <summary>
     /// Optional. Adds custom class string to the component
@@ -58,7 +58,7 @@
     /// <remarks>
     /// Typically this is the <c>Context</c> value in <see cref="MdcTable{TItem}"/>
     /// </remarks>
-    [Parameter] public T RowItem { get; set; }
+    [Parameter] public MdcTableTItem RowItem { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
 
     /// <summary>

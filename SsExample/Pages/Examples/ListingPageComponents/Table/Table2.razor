@@ -10,9 +10,9 @@
                   Selectable="true">
             <TableDefinition>
                 <MdcTableRow OnClick="@(async () => await PopulateDialog(exampleItem))">
-                    <MdcTableColumn RowItem="exampleItem" HeaderText="Person" SortColumn="PersonName">@($"{exampleItem.PersonName} ({exampleItem.Id})")</MdcTableColumn>
-                    <MdcTableColumn RowItem="exampleItem" UniqueKey="feeColumn">@exampleItem.Fee.ToString("c")</MdcTableColumn>
-                    <MdcTableColumn RowItem="exampleItem" UniqueKey="dateColumn">@exampleItem.DatePaid.ToString("M/dd/yyyy")</MdcTableColumn>
+                    <MdcTableColumn HeaderText="Person" SortColumn="PersonName">@($"{exampleItem.PersonName} ({exampleItem.Id})")</MdcTableColumn>
+                    <MdcTableColumn UniqueKey="feeColumn">@exampleItem.Fee.ToString("c")</MdcTableColumn>
+                    <MdcTableColumn UniqueKey="dateColumn">@exampleItem.DatePaid.ToString("M/dd/yyyy")</MdcTableColumn>
                 </MdcTableRow>
             </TableDefinition>
             <NoResultsMessage>No results found</NoResultsMessage>
@@ -27,9 +27,9 @@
             Selectable=""true"">
     <TableDefinition>
         <MdcTableRow OnClick=""@(async () => await PopulateDialog(exampleItem))"">
-            <MdcTableColumn RowItem=""exampleItem"" HeaderText=""Person"" SortColumn=""PersonName"">@($""{exampleItem.PersonName} ({exampleItem.Id})"")</MdcTableColumn>
-            <MdcTableColumn RowItem=""exampleItem"" UniqueKey=""feeColumn"">@exampleItem.Fee.ToString(""c"")</MdcTableColumn>
-            <MdcTableColumn RowItem=""exampleItem"" UniqueKey=""dateColumn"">@exampleItem.DatePaid.ToString(""M/dd/yyyy"")</MdcTableColumn>
+            <MdcTableColumn HeaderText=""Person"" SortColumn=""PersonName"">@($""{exampleItem.PersonName} ({exampleItem.Id})"")</MdcTableColumn>
+            <MdcTableColumn UniqueKey=""feeColumn"">@exampleItem.Fee.ToString(""c"")</MdcTableColumn>
+            <MdcTableColumn UniqueKey=""dateColumn"">@exampleItem.DatePaid.ToString(""M/dd/yyyy"")</MdcTableColumn>
         </MdcTableRow>
     </TableDefinition>
     <NoResultsMessage>No results found</NoResultsMessage>
