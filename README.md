@@ -7,3 +7,5 @@ without each member having to learn the material components web implementation s
 
 A huge thanks to [Steve Sanderson](https://github.com/SteveSandersonMS) for his [RazorComponents.MaterialDesign](https://github.com/SteveSandersonMS/RazorComponents.MaterialDesign) repo which served as the initial
 foundation. And thanks to the greater open source community for their shared knowledge and expertise. ♥
+
+View a demo at [https://mdc-blazor.azurewebsites.net](https://mdc-blazor.azurewebsites.net/)
