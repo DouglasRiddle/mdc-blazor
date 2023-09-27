@@ -10,6 +10,7 @@
 	{
 		"outputFileName": "wwwroot/mdc-blazor.min.js",
 		"inputFiles": [
+			"wwwroot/libraries/md3.js",
 			"wwwroot/libraries/material-components-web.min.js",
 			"wwwroot/mdc-blazor.js"
 		],

@@ -20,12 +20,12 @@
 
         /* Dynamic Properties */
         /// <value>The cx and cy value</value>
-        public string CxCyValue { get { return (SizeValue / 2).ToString(); } }
+        public string CxCyValue => (SizeValue / 2).ToString();
         /// <value>The string value of <c>SizeValue</c></value>
         private string SizeString => SizeValue.ToString();
         /// <value>The style width and height values</value>
-        public string StyleValue { get { return $"width: {SizeString}px; height: {SizeString}px;"; } }
+        public string StyleValue => $"width: {SizeString}px; height: {SizeString}px;";
         /// <value>The viewBox value</value>
-        public string ViewBoxValue { get { return $"0 0 {SizeString} {SizeString}"; } }
+        public string ViewBoxValue => $"0 0 {SizeString} {SizeString}";
     }
 }

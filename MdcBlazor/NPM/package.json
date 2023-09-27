@@ -1,0 +1,19 @@
+{
+  "name": "npm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack ./bundle.js --output-path ../wwwroot/libraries --output-filename md3.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material/web": "^1.0.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}
